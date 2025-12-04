@@ -1,0 +1,86 @@
+############################
+# DJANGO / PYTHON PROJECT #
+############################
+
+# Python bytecode
+*.py[cod]
+__pycache__/
+*$py.class
+
+# Django default database
+db.sqlite3
+
+# Media uploads
+media/
+
+# Logs
+*.log
+
+# Local environment variables / credentials
+.env
+.env.local
+*.secret
+secrets.json
+
+# Static files collected for production
+staticfiles/
+static_root/
+assets/
+
+# Backups
+*.bak
+
+##########################
+# VIRTUAL ENVIRONMENTS   #
+##########################
+env/
+venv/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+#########################
+# IDE / EDITOR FILES    #
+#########################
+
+# VS Code
+.vscode/
+.history/
+
+# PyCharm / IntelliJ
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+####################
+# TESTING & CACHE  #
+####################
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.tox/
+nosetests.xml
+coverage.xml
+.hypothesis/
+.cache
+
+#########################
+# PACKAGING & BUILDING  #
+#########################
+.dist/
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+*.whl
+
+#########################
+# SYSTEM / OS FILES     #
+#########################
+.DS_Store
+Thumbs.db
+desktop.ini

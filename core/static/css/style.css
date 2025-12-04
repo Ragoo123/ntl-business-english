@@ -1,0 +1,57 @@
+:root {
+    --primary-red: #c1121f;
+    --primary-blue: #003f88;
+}
+
+.hero-section {
+   
+    padding: 100px 0;
+}
+
+.cta-banner {
+    background: var(--primary-red);
+    padding: 60px 0;
+}
+
+.step-card {
+    border-top: 6px solid var(--primary-red);
+    border-radius: 12px;
+}
+
+.navbar-brand img {
+    height: 45px;
+    border-radius: 50%;
+}
+
+.bg-primary-custom {
+    background-color: var(--primary-blue) !important;
+}
+
+.navbar .nav-link {
+    color: white !important;
+}
+
+.navbar .nav-link:hover {
+    color: var(--primary-red) !important;
+}
+
+
+.nav-link {
+    position: relative;
+    color: white !important;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--primary-red);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
