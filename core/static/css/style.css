@@ -1,57 +1,91 @@
 :root {
-    --primary-red: #c1121f;
-    --primary-blue: #003f88;
+	--primary-red: #7a1118;
+	--primary-blue: #003f88;
 }
 
 .hero-section {
-   
-    padding: 100px 0;
+	position: relative;
+	background-image: url("../images/hero.jpg"); /* place your image in core/static/images/ */
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	min-height: 70vh; /* height of hero */
+	padding: 0; /* padding handled by flex */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	text-align: center;
+}
+
+.hero-section::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
+	z-index: 1;
+}
+
+.hero-section .container {
+	position: relative;
+	z-index: 2; /* make sure text and buttons are above overlay */
 }
 
 .cta-banner {
-    background: var(--primary-red);
-    padding: 60px 0;
+	background: var(--primary-red);
+	padding: 60px 0;
 }
 
 .step-card {
-    border-top: 6px solid var(--primary-red);
-    border-radius: 12px;
+	border-top: 6px solid var(--primary-red);
+	border-radius: 12px;
 }
 
 .navbar-brand img {
-    height: 45px;
-    border-radius: 50%;
+	height: 45px;
+	border-radius: 50%;
 }
 
 .bg-primary-custom {
-    background-color: var(--primary-blue) !important;
+	background-color: var(--primary-blue) !important;
 }
 
 .navbar .nav-link {
-    color: white !important;
+	color: white !important;
 }
 
 .navbar .nav-link:hover {
-    color: var(--primary-red) !important;
+	color: var(--primary-red) !important;
 }
 
-
 .nav-link {
-    position: relative;
-    color: white !important;
+	position: relative;
+	color: white !important;
 }
 
 .nav-link::after {
-    content: "";
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 0%;
-    height: 2px;
-    background: var(--primary-red);
-    transition: width 0.3s ease;
+	content: "";
+	position: absolute;
+	bottom: -3px;
+	left: 0;
+	width: 0%;
+	height: 2px;
+	background: var(--primary-red);
+	transition: width 0.3s ease;
 }
 
 .nav-link:hover::after {
-    width: 100%;
+	width: 100%;
+}
+
+.btn-primary-custom {
+	background-color: var(--primary-red);
+	border-color: var(--primary-red);
+	color: white;
+}
+
+.btn-primary-custom:hover {
+	background-color: #5c0d13; /* optional: darker shade on hover */
+	border-color: #5c0d13;
 }
