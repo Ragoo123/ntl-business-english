@@ -9,17 +9,11 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-
-	min-height: 70vh; /* height of hero */
-	padding: 0; /* padding handled by flex */
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: white;
-	text-align: center;
+	min-height: 85svh; /* height of hero */
 }
 
-.hero-section::before {
+.hero-section::before,
+.cta-banner::before {
 	content: "";
 	position: absolute;
 	inset: 0;
@@ -27,14 +21,41 @@
 	z-index: 1;
 }
 
-.hero-section .container {
+.hero-section .container,
+.cta-banner .container {
 	position: relative;
 	z-index: 2; /* make sure text and buttons are above overlay */
 }
 
 .cta-banner {
-	background: var(--primary-red);
+	position: relative;
+	background-image: url("../images/bg-cta.jpg"); /* place your image in core/static/images/ */
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 	padding: 60px 0;
+	min-height: 10vh; /* height of hero */
+}
+
+.login-image-col {
+    position: relative;
+    background-image: url("../images/hero.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 85vh; /* use vh instead of svh */
+}
+
+.login-image-col::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); /* dark overlay */
+    z-index: 1;
+}
+
+.login-image-col > div {
+    position: relative;
+    z-index: 2; /* text above overlay */
 }
 
 .step-card {
@@ -49,6 +70,14 @@
 
 .bg-primary-custom {
 	background-color: var(--primary-blue) !important;
+}
+
+.bg-secondary-custom {
+	background-color: var(--primary-red) !important;
+}
+
+.border-secondary-custom {
+	border-color: var(--primary-red) !important;
 }
 
 .navbar .nav-link {
@@ -88,4 +117,10 @@
 .btn-primary-custom:hover {
 	background-color: #5c0d13; /* optional: darker shade on hover */
 	border-color: #5c0d13;
+	color: white;
 }
+
+.text-secondary-custom {
+	color: var(--primary-red) !important;
+}
+
