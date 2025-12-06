@@ -18,18 +18,20 @@
   <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
     <div class="p-4 p-md-5 shadow-lg bg-white rounded border border-3 border-secondary-custom" style="width: 100%; max-width: 400px;">
       <h2 class="mb-3 text-center" style="color: var(--primary-blue);">Register</h2>
-      <form method="post">
+      <form method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
-        <div class="mb-3">
-        <p class="form-text text-muted">Enter your username and password to register.</p>
-          <label for="id_username" class="form-label">Username</label>
-          <input type="text" name="username" class="form-control" id="id_username" placeholder="Username" required>
-        </div>
-        <div class="mb-3">
-          <label for="id_password" class="form-label">Password</label>
-          <input type="password" name="password" class="form-control" id="id_password" placeholder="Password" required>
-        </div>
+        {% for field in form %}
+                  <div class="mb-3">
+                      <label class="form-label">{{ field.label }}</label>
+                      {{ field }}
+                      {% if field.errors %}
+                          <small class="text-danger">{{ field.errors }}</small>
+                      {% endif %}
+                  </div>
+              {% endfor %}
+        
         <button type="submit" class="btn btn-primary-custom w-100 py-2">Register</button>
+        
       </form>
       <p class="form-text text-muted">Begin your journey with NTL Business English.</p>
     </div>
