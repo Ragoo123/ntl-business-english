@@ -10,3 +10,8 @@ class indexView(View):
 @login_required
 def dashboardView(request):
     return render(request, "core/dashboard.html")
+
+
+@login_required
+def vocabularyView(request):
+    return render(request, "")
