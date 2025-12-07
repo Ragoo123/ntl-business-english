@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    # Crispy
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 SITE_ID = 1
@@ -149,5 +152,7 @@ LOGIN_REDIRECT_URL = 'dashboard'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_LOGOUT_ON_GET = True
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*']
 ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

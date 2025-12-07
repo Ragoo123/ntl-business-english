@@ -3,6 +3,30 @@
 	--primary-blue: #003f88;
 }
 
+/* Body text */
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400; /* regular */
+}
+
+/* Main headers */
+h1, h2, h3 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700; /* bold */
+}
+
+/* Subheadings / secondary text */
+h4, h5, h6 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500; /* medium */
+}
+
+/* Buttons, links, or emphasis */
+.btn, a, .highlight {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500; /* medium emphasis */
+}
+
 .hero-section {
 	position: relative;
 	background-image: url("../images/hero.jpg"); /* place your image in core/static/images/ */
@@ -38,24 +62,24 @@
 }
 
 .login-image-col {
-    position: relative;
-    background-image: url("../images/hero.jpg");
-    background-size: cover;
-    background-position: center;
-    min-height: 85vh; /* use vh instead of svh */
+	position: relative;
+	background-image: url("../images/hero.jpg");
+	background-size: cover;
+	background-position: center;
+	min-height: 100vh; /* use vh instead of svh */
 }
 
 .login-image-col::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5); /* dark overlay */
-    z-index: 1;
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5); /* dark overlay */
+	z-index: 1;
 }
 
 .login-image-col > div {
-    position: relative;
-    z-index: 2; /* text above overlay */
+	position: relative;
+	z-index: 2; /* text above overlay */
 }
 
 .step-card {
@@ -123,4 +147,49 @@
 .text-secondary-custom {
 	color: var(--primary-red) !important;
 }
+/* Make all form labels red */
+form .form-label {
+	color: var(--primary-red);
+}
+
+#id_password1_helptext.go {
+	display: none !important;
+}
+
+/* Optional: style the bullet marker itself */
+#id_password1_helptext li::marker {
+	color: var(--primary-red);
+}
+
+/* Adjust indentation to align nicely with inputs */
+#id_password1_helptext ul {
+	padding-left: 1.25rem; /* matches Bootstrap 5 form spacing */
+	margin: 0; /* remove extra margin */
+}
+
+.invalid-feedback {
+	color: var(--primary-red);
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+	border-color: var(--primary-red);
+	/* optional: change the shadow */
+	box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25);
+}
+
+/* Hide the unwanted help text from allauth/Crispy forms */
+#id_password_helptext {
+	display: none !important;
+}
+
+.right-column {
+	width: 100% !important;
+	max-width: 400px !important;
+	margin: 0 auto !important;
+	height: 115vh !important;
+	margin-top: 3rem !important;
+	margin-bottom: 3rem !important;
+}
+
 
