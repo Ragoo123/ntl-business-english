@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Folder, VocabularyWord, QuizScore
 
-# Register your models here.
+admin.site.register(Folder)
+admin.site.register(VocabularyWord)
+admin.site.register(QuizScore)
