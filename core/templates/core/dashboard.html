@@ -4,17 +4,17 @@
 		<!-- Welcome message -->
 		<h2 class="fw-bold">Welcome {{user.username|title}}!</h2>
 		<hr />
-		<p class="text-muted">Please select a folder to review vocabulary and then take a quiz to test your learning.</p>
+		<p>Please select a folder to review vocabulary and then take a quiz to test your learning.</p>
 		<hr />
 	</div>
-	{{ user.folders.count }}
+
 	<!-- Folder cards -->
 	<div class="row">
 		{% for folder in folders %}
 		<div class="col-md-3 mb-3 folder-col">
-			<div class="card shadow-sm rounded-3 h-100 bg-light position-relative">
+			<div class="card shadow-sm rounded-3 h-100 bg-light">
 				<div class="card-body d-flex flex-column text-center h-100">
-					<h5 class="card-title rounded-pill bg-white p-2 shadow-sm" title="{{ folder.name }}">📁 {{ folder.name }}</h5>
+					<h5 class="card-title rounded-pill bg-white p-2 shadow-sm border" title="{{ folder.name }}">📁 {{ folder.name }}</h5>
 					<p class="text-muted small mb-2">{{ folder.words.count }} words</p>
 
 					<!-- Buttons -->
