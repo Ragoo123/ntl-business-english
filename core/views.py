@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
+from vocabulary.models import Folder
 
 # Create your views here.
 class indexView(View):
@@ -9,7 +10,12 @@ class indexView(View):
 
 @login_required
 def dashboardView(request):
-    return render(request, "core/dashboard.html")
+    folders = Folder.objects.all()  # everyone sees all folders
+
+    context = {
+        'folders': folders
+    }
+    return render(request, "core/dashboard.html", context)
 
 
 @login_required
