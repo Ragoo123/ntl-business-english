@@ -10,75 +10,214 @@
 
 	<!-- Folder cards -->
 	<div class="row">
+		<div class="col-md-3 mb-3 folder-col">
+			<div class="card shadow-sm rounded-3 h-100 bg-light position-relative">
+				<div class="card-body d-flex flex-column text-center h-100">
+					<h5 class="card-title rounded-pill bg-white p-2 shadow-sm" title="Folder Name">📁 Folder Name</h5>
 
-    <div class="col-md-3 mb-3 folder-col">
-        <div class="card shadow-sm rounded-3 h-100 bg-light">
-            <div class="card-body d-flex flex-column text-center h-100">
-                <h5 class="card-title" title="Folder Name">📁 Folder Name</h5>
-                <p class="text-muted small">10 words</p>
-                <div class="d-flex flex-wrap gap-2 justify-content-center mt-auto">
-                    <a href="{% url 'vocabulary' %}" class="btn btn-sm btn-primary">Open</a>
-                    <a href="#" class="btn btn-sm btn-quiz">Quiz</a>
-                </div>
-            </div>
-        </div>
-    </div>
+					<p class="text-muted small mb-2">10 words</p>
 
-    <div class="col-md-3 mb-3 folder-col">
-        <div class="card shadow-sm rounded-3 h-100 bg-light">
-            <div class="card-body d-flex flex-column text-center h-100">
-                <h5 class="card-title" title="Folder Name">📁 Folder Name</h5>
-                <p class="text-muted small">10 words</p>
-                <div class="d-flex flex-wrap gap-2 justify-content-center mt-auto">
-                    <a href="#" class="btn btn-sm btn-primary">Open</a>
-                    <a href="#" class="btn btn-sm btn-quiz">Quiz</a>
-                </div>
-            </div>
-        </div>
-    </div>
+					<!-- Buttons -->
+					<div class="d-flex flex-wrap gap-2 justify-content-center mt-auto position-relative align-items-center">
+						<a href="{% url 'vocabulary' %}" class="btn btn-secondary-custom btn-sm">Open</a>
+						<div class="dropdown">
+							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
 
-    <div class="col-md-3 mb-3 folder-col">
-        <div class="card shadow-sm rounded-3 h-100 bg-light">
-            <div class="card-body d-flex flex-column text-center h-100">
-                <h5 class="card-title" title="Folder Name">📁 Folder Name</h5>
-                <p class="text-muted small">10 words</p>
-                <div class="d-flex flex-wrap gap-2 justify-content-center mt-auto">
-                    <a href="#" class="btn btn-sm btn-primary">Open</a>
-                    <a href="#" class="btn btn-sm btn-quiz">Quiz</a>
-                </div>
-            </div>
-        </div>
-    </div>
+							<ul class="dropdown-menu shadow">
+								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
+							</ul>
+						</div>
 
-    <div class="col-md-3 mb-3 folder-col">
-        <div class="card shadow-sm rounded-3 h-100 bg-light">
-            <div class="card-body d-flex flex-column text-center h-100">
-                <h5 class="card-title" title="Folder Name">📁 Folder Name</h5>
-                <p class="text-muted small">10 words</p>
-                <div class="d-flex flex-wrap gap-2 justify-content-center mt-auto">
-                    <a href="#" class="btn btn-sm btn-primary">Open</a>
-                    <a href="#" class="btn btn-sm btn-quiz">Quiz</a>
-                </div>
-            </div>
-        </div>
-    </div>
+						<!-- Trophy overlaps slightly -->
+						<span class="badge rounded-pill bg-success fs-5" title="Perfect Score!"> 🏆 </span>
+					</div>
 
-    <div class="col-md-3 mb-3 folder-col">
-        <div class="card shadow-sm rounded-3 h-100 bg-light">
-            <div class="card-body d-flex flex-column text-center h-100">
-                <h5 class="card-title" title="Folder Name">📁 Folder Name</h5>
-                <p class="text-muted small">10 words</p>
-                <div class="d-flex flex-wrap gap-2 justify-content-center mt-auto">
-                    <a href="#" class="btn btn-sm btn-primary">Open</a>
-                    <a href="#" class="btn btn-sm btn-quiz">Quiz</a>
-                </div>
-            </div>
-        </div>
-    </div>
+					<hr class="my-3" />
 
-    <!-- Add more col-md-3 items as needed -->
+					<!-- Last Scores -->
+					<div class="mb-2">
+						<small class="text-muted d-block mb-1">Last Scores:</small>
+						<div class="d-flex gap-2 flex-wrap justify-content-center">
+							<span class="badge bg-secondary">Vocabulary: 10/10</span>
+							<span class="badge bg-secondary">Gap Fill: 10/10</span>
+							<span class="badge bg-secondary">Listening: 10/10</span>
+							<span class="badge bg-secondary">Reading: 10/10</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-</div>
+		<div class="col-md-3 mb-3 folder-col">
+			<div class="card shadow-sm rounded-3 h-100 bg-light position-relative">
+				<div class="card-body d-flex flex-column text-center h-100">
+					<h5 class="card-title rounded-pill bg-white p-2 shadow-sm" title="Folder Name">📁 Folder Name</h5>
+
+					<p class="text-muted small mb-2">10 words</p>
+
+					<!-- Buttons -->
+					<div class="d-flex flex-wrap gap-2 justify-content-center mt-auto position-relative align-items-center">
+						<a href="{% url 'vocabulary' %}" class="btn btn-secondary-custom btn-sm">Open</a>
+						<div class="dropdown">
+							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
+
+							<ul class="dropdown-menu shadow">
+								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
+							</ul>
+						</div>
+
+						<!-- Trophy overlaps slightly -->
+						<span class="badge rounded-pill bg-secondary fs-5" title="Perfect Score!"> <i class="bi bi-trophy-fill"></i> </span>
+					</div>
+
+					<hr class="my-3" />
+
+					<!-- Last Scores -->
+					<div class="mb-2">
+						<small class="text-muted d-block mb-1">Last Scores:</small>
+						<div class="d-flex gap-2 flex-wrap justify-content-center">
+							<span class="badge bg-secondary">Vocabulary: 7/10</span>
+							<span class="badge bg-secondary">Gap Fill: 3/10</span>
+							<span class="badge bg-secondary">Listening: 0/10</span>
+							<span class="badge bg-secondary">Reading: 0/10</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Static Trophy -->
+			</div>
+		</div>
+
+		<div class="col-md-3 mb-3 folder-col">
+			<div class="card shadow-sm rounded-3 h-100 bg-light position-relative">
+				<div class="card-body d-flex flex-column text-center h-100">
+					<h5 class="card-title rounded-pill bg-white p-2 shadow-sm" title="Folder Name">📁 Folder Name</h5>
+
+					<p class="text-muted small mb-2">10 words</p>
+
+					<!-- Buttons -->
+					<div class="d-flex flex-wrap gap-2 justify-content-center mt-auto position-relative align-items-center">
+						<a href="{% url 'vocabulary' %}" class="btn btn-secondary-custom btn-sm">Open</a>
+						<div class="dropdown">
+							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
+
+							<ul class="dropdown-menu shadow">
+								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
+							</ul>
+						</div>
+
+						<!-- Trophy overlaps slightly -->
+						<span class="badge rounded-pill bg-secondary fs-5" title="Perfect Score!"> <i class="bi bi-trophy-fill"></i> </span>
+					</div>
+
+					<hr class="my-3" />
+
+					<!-- Last Scores -->
+					<div class="mb-2">
+						<small class="text-muted d-block mb-1">Last Scores:</small>
+						<div class="d-flex gap-2 flex-wrap justify-content-center">
+							<span class="badge bg-secondary">Vocabulary: 7/10</span>
+							<span class="badge bg-secondary">Gap Fill: 3/10</span>
+							<span class="badge bg-secondary">Listening: 0/10</span>
+							<span class="badge bg-secondary">Reading: 0/10</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Static Trophy -->
+			</div>
+		</div>
+
+        <div class="col-md-3 mb-3 folder-col">
+			<div class="card shadow-sm rounded-3 h-100 bg-light position-relative">
+				<div class="card-body d-flex flex-column text-center h-100">
+					<h5 class="card-title rounded-pill bg-white p-2 shadow-sm" title="Folder Name">📁 Folder Name</h5>
+
+					<p class="text-muted small mb-2">10 words</p>
+
+					<!-- Buttons -->
+					<div class="d-flex flex-wrap gap-2 justify-content-center mt-auto position-relative align-items-center">
+						<a href="{% url 'vocabulary' %}" class="btn btn-secondary-custom btn-sm">Open</a>
+						<div class="dropdown">
+							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
+
+							<ul class="dropdown-menu shadow">
+								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
+							</ul>
+						</div>
+
+						<!-- Trophy overlaps slightly -->
+						<span class="badge rounded-pill bg-secondary fs-5" title="Perfect Score!"> <i class="bi bi-trophy-fill"></i> </span>
+					</div>
+
+					<hr class="my-3" />
+
+					<!-- Last Scores -->
+					<div class="mb-2">
+						<small class="text-muted d-block mb-1">Last Scores:</small>
+						<div class="d-flex gap-2 flex-wrap justify-content-center">
+							<span class="badge bg-secondary">Vocabulary: 7/10</span>
+							<span class="badge bg-secondary">Gap Fill: 3/10</span>
+							<span class="badge bg-secondary">Listening: 0/10</span>
+							<span class="badge bg-secondary">Reading: 0/10</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Static Trophy -->
+			</div>
+		</div>
+
+        <div class="col-md-3 mb-3 folder-col">
+			<div class="card shadow-sm rounded-3 h-100 bg-light position-relative">
+				<div class="card-body d-flex flex-column text-center h-100">
+					<h5 class="card-title rounded-pill bg-white p-2 shadow-sm" title="Folder Name">📁 Folder Name</h5>
+
+					<p class="text-muted small mb-2">10 words</p>
+
+					<!-- Buttons -->
+					<div class="d-flex flex-wrap gap-2 justify-content-center mt-auto position-relative align-items-center">
+						<a href="{% url 'vocabulary' %}" class="btn btn-secondary-custom btn-sm">Open</a>
+						<div class="dropdown">
+							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
+
+							<ul class="dropdown-menu shadow">
+								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
+								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
+							</ul>
+						</div>
+
+						<!-- Trophy overlaps slightly -->
+						<span class="badge rounded-pill bg-secondary fs-5" title="Perfect Score!"> <i class="bi bi-trophy-fill"></i> </span>
+					</div>
+
+					<hr class="my-3" />
+
+					<!-- Last Scores -->
+					<div class="mb-2">
+						<small class="text-muted d-block mb-1">Last Scores:</small>
+						<div class="d-flex gap-2 flex-wrap justify-content-center">
+							<span class="badge bg-secondary">Vocabulary: 7/10</span>
+							<span class="badge bg-secondary">Gap Fill: 3/10</span>
+							<span class="badge bg-secondary">Listening: 0/10</span>
+							<span class="badge bg-secondary">Reading: 0/10</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Static Trophy -->
+			</div>
+		</div>
+	</div>
 
 	{%endblock%}
 </div>

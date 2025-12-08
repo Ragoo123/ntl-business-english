@@ -138,6 +138,14 @@ h4, h5, h6 {
 	color: white;
 }
 
+.btn-secondary-custom {
+	background-color: var(--primary-blue);
+	border-color: var(--primary-blue);
+	color: white; 
+	
+}
+
+
 .btn-primary-custom:hover {
 	background-color: #5c0d13; /* optional: darker shade on hover */
 	border-color: #5c0d13;
