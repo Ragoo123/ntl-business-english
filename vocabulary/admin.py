@@ -1,9 +1,19 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 from django.contrib.auth.models import User
 from .models import Folder, VocabularyWord, QuizScore
+from .resources import VocabularyResource
+
+
+@admin.register(VocabularyWord)
+class VocabularyAdmin(ImportExportModelAdmin):
+    resource_class = VocabularyResource
+    list_display = ('word', 'definition', 'folder')
+    list_filter = ('folder',)
+
 
 class FolderAdmin(admin.ModelAdmin):
-    list_display = ('name', 'owner', 'created_at')
+    list_display = ('name', 'owner', 'created_at', 'id')
     exclude = ('owner',)  # hide owner field in form
 
     def save_model(self, request, obj, form, change):
@@ -13,5 +23,4 @@ class FolderAdmin(admin.ModelAdmin):
 
         
 admin.site.register(Folder, FolderAdmin)
-admin.site.register(VocabularyWord)
 admin.site.register(QuizScore)

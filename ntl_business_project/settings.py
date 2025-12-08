@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     # Crispy
     'crispy_forms',
     'crispy_bootstrap5',
+    # Import/Export
+    'import_export',
 ]
 
 SITE_ID = 1

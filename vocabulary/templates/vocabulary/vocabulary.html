@@ -2,25 +2,28 @@
 <div class="container my-3">
 	<div class="row mb-3">
 		<div class="col">
-			<h1>Vocabulary</h1>
+			<h1>Vocabulary for {{ folder.name }}</h1>
+			
 		</div>
 	</div>
 
 	<div class="row g-3">
-		<!-- Card -->
+		{% for word in words %}
 		<div class="col-12 col-sm-6 col-md-4">
 			<div class="card shadow-sm rounded-3 bg-light">
 				<div class="card-body">
-					<strong class="card-title">Vocabulary Word</strong>
+					<strong class="card-title">{{ word.word }}</strong>
+
 					<p class="small m-0 text-truncate">
 						<strong class="text-secondary-custom">Definition:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet inventore ea minus optio eius porro iure ullam qui ab cupiditate, excepturi nisi omnis quos. Iusto saepe accusamus inventore ipsa? Amet.
+						{{ word.definition }}
 					</p>
 
 					<p class="small mb-2 text-truncate">
 						<strong class="text-secondary-custom">Example Sentence:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas alias at consequuntur repellat delectus aspernatur veritatis, impedit debitis sit?
+						{{ word.example_sentence }}
 					</p>
+
 					<div class="d-flex justify-content-start gap-2">
 						<button class="btn btn-secondary-custom btn-sm">Review</button>
 
@@ -38,224 +41,9 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- Duplicate this card for more words -->
-		<div class="col-12 col-sm-6 col-md-4">
-			<div class="card shadow-sm rounded-3 bg-light">
-				<div class="card-body">
-					<strong class="card-title">Vocabulary Word</strong>
-					<p class="small m-0 text-truncate">
-						<strong class="text-secondary-custom">Definition:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet inventore ea minus optio eius porro iure ullam qui ab cupiditate, excepturi nisi omnis quos. Iusto saepe accusamus inventore ipsa? Amet.
-					</p>
-
-					<p class="small mb-2 text-truncate">
-						<strong class="text-secondary-custom">Example Sentence:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas alias at consequuntur repellat delectus aspernatur veritatis, impedit debitis sit?
-					</p>
-					<div class="d-flex justify-content-start gap-2">
-						<button class="btn btn-secondary-custom btn-sm">Review</button>
-
-						<!-- DROPDOWN BUTTON -->
-						<div class="dropdown">
-							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
-
-							<ul class="dropdown-menu shadow">
-								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-12 col-sm-6 col-md-4">
-			<div class="card shadow-sm rounded-3 bg-light">
-				<div class="card-body">
-					<strong class="card-title">Vocabulary Word</strong>
-					<p class="small m-0 text-truncate">
-						<strong class="text-secondary-custom">Definition:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet inventore ea minus optio eius porro iure ullam qui ab cupiditate, excepturi nisi omnis quos. Iusto saepe accusamus inventore ipsa? Amet.
-					</p>
-
-					<p class="small mb-2 text-truncate">
-						<strong class="text-secondary-custom">Example Sentence:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas alias at consequuntur repellat delectus aspernatur veritatis, impedit debitis sit?
-					</p>
-					<div class="d-flex justify-content-start gap-2">
-						<button class="btn btn-secondary-custom btn-sm">Review</button>
-
-						<!-- DROPDOWN BUTTON -->
-						<div class="dropdown">
-							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
-
-							<ul class="dropdown-menu shadow">
-								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-12 col-sm-6 col-md-4">
-			<div class="card shadow-sm rounded-3  bg-light">
-				<div class="card-body">
-					<strong class="card-title">Vocabulary Word</strong>
-					<p class="small m-0 text-truncate">
-						<strong class="text-secondary-custom">Definition:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet inventore ea minus optio eius porro iure ullam qui ab cupiditate, excepturi nisi omnis quos. Iusto saepe accusamus inventore ipsa? Amet.
-					</p>
-
-					<p class="small mb-2 text-truncate">
-						<strong class="text-secondary-custom">Example Sentence:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas alias at consequuntur repellat delectus aspernatur veritatis, impedit debitis sit?
-					</p>
-					<div class="d-flex justify-content-start gap-2">
-						<button class="btn btn-secondary-custom btn-sm">Review</button>
-
-						<!-- DROPDOWN BUTTON -->
-						<div class="dropdown">
-							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
-
-							<ul class="dropdown-menu shadow">
-								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-12 col-sm-6 col-md-4">
-			<div class="card shadow-sm rounded-3  bg-light">
-				<div class="card-body">
-					<strong class="card-title">Vocabulary Word</strong>
-					<p class="small m-0 text-truncate">
-						<strong class="text-secondary-custom">Definition:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet inventore ea minus optio eius porro iure ullam qui ab cupiditate, excepturi nisi omnis quos. Iusto saepe accusamus inventore ipsa? Amet.
-					</p>
-
-					<p class="small mb-2 text-truncate">
-						<strong class="text-secondary-custom">Example Sentence:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas alias at consequuntur repellat delectus aspernatur veritatis, impedit debitis sit?
-					</p>
-					<div class="d-flex justify-content-start gap-2">
-						<button class="btn btn-secondary-custom btn-sm">Review</button>
-
-						<!-- DROPDOWN BUTTON -->
-						<div class="dropdown">
-							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
-
-							<ul class="dropdown-menu shadow">
-								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-12 col-sm-6 col-md-4">
-			<div class="card shadow-sm rounded-3  bg-light">
-				<div class="card-body">
-					<strong class="card-title">Vocabulary Word</strong>
-					<p class="small m-0 text-truncate">
-						<strong class="text-secondary-custom">Definition:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet inventore ea minus optio eius porro iure ullam qui ab cupiditate, excepturi nisi omnis quos. Iusto saepe accusamus inventore ipsa? Amet.
-					</p>
-
-					<p class="small mb-2 text-truncate">
-						<strong class="text-secondary-custom">Example Sentence:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas alias at consequuntur repellat delectus aspernatur veritatis, impedit debitis sit?
-					</p>
-					<div class="d-flex justify-content-start gap-2">
-						<button class="btn btn-secondary-custom btn-sm">Review</button>
-
-						<!-- DROPDOWN BUTTON -->
-						<div class="dropdown">
-							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
-
-							<ul class="dropdown-menu shadow">
-								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-12 col-sm-6 col-md-4">
-			<div class="card shadow-sm rounded-3  bg-light">
-				<div class="card-body">
-					<strong class="card-title">Vocabulary Word</strong>
-					<p class="small m-0 text-truncate">
-						<strong class="text-secondary-custom">Definition:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet inventore ea minus optio eius porro iure ullam qui ab cupiditate, excepturi nisi omnis quos. Iusto saepe accusamus inventore ipsa? Amet.
-					</p>
-
-					<p class="small mb-2 text-truncate">
-						<strong class="text-secondary-custom">Example Sentence:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas alias at consequuntur repellat delectus aspernatur veritatis, impedit debitis sit?
-					</p>
-					<div class="d-flex justify-content-start gap-2">
-						<button class="btn btn-secondary-custom btn-sm">Review</button>
-
-						<!-- DROPDOWN BUTTON -->
-						<div class="dropdown">
-							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
-
-							<ul class="dropdown-menu shadow">
-								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-12 col-sm-6 col-md-4">
-			<div class="card shadow-sm rounded-3  bg-light">
-				<div class="card-body">
-					<strong class="card-title">Vocabulary Word</strong>
-					<p class="small m-0 text-truncate">
-						<strong class="text-secondary-custom">Definition:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet inventore ea minus optio eius porro iure ullam qui ab cupiditate, excepturi nisi omnis quos. Iusto saepe accusamus inventore ipsa? Amet.
-					</p>
-
-					<p class="small mb-2 text-truncate">
-						<strong class="text-secondary-custom">Example Sentence:</strong>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas alias at consequuntur repellat delectus aspernatur veritatis, impedit debitis sit?
-					</p>
-					<div class="d-flex justify-content-start gap-2">
-						<button class="btn btn-secondary-custom btn-sm">Review</button>
-
-						<!-- DROPDOWN BUTTON -->
-						<div class="dropdown">
-							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
-
-							<ul class="dropdown-menu shadow">
-								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		{% empty %}
+		<p>No vocabulary in this folder yet.</p>
+		{% endfor %}
 	</div>
 	<!-- END row -->
 </div>
