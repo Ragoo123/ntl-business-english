@@ -1,0 +1,47 @@
+{% if prev_word %}
+<div hx-trigger="keydown[event.key=='ArrowLeft'] from:document" hx-get="{% url 'vocabulary_detail' folder.id prev_word.id %}" hx-target="#reviewModalContent" hx-swap="innerHTML"></div>
+{% endif %} {% if next_word %}
+<div hx-trigger="keydown[event.key=='ArrowRight'] from:document" hx-get="{% url 'vocabulary_detail' folder.id next_word.id %}" hx-target="#reviewModalContent" hx-swap="innerHTML"></div>
+{% endif %}
+
+<div class="modal-header border-0 bg-light">
+	<h3 class="modal-title fw-bold">Review Vocabulary</h3>
+</div>
+
+<div class="modal-body">
+	<div class="p-3 rounded-3 bg-primary-custom mb-3 border-start border-4 border-secondary-custom">
+		<p class="m-0 text-white fs-4">
+			<strong>Word:</strong>
+			{{ word.word }}
+		</p>
+	</div>
+
+	<div class="p-3 rounded-3 bg-light mb-3 border-start border-4 border-primary">
+		<p class="m-0">
+			<strong class="text-primary">Definition:</strong><br />
+			{{ word.definition }}
+		</p>
+	</div>
+
+	<div class="p-3 rounded-3 bg-light border-start border-4 border-secondary">
+		<p class="m-0">
+			<strong class="text-secondary">Example:</strong><br />
+			{{ word.example_sentence }}
+		</p>
+	</div>
+</div>
+
+<div class="modal-footer justify-content-center border-0 pt-0">
+	{% if prev_word %}
+	<button class="btn btn-secondary-custom btn-lg rounded-circle shadow" hx-get="{% url 'vocabulary_detail' folder.id prev_word.id %}" hx-target="#reviewModalContent" hx-swap="innerHTML">
+		<i class="bi bi-arrow-left-circle" style="font-size: 1.4rem"></i>
+	</button>
+	{% endif %} {% if next_word %}
+	<button class="btn btn-secondary-custom btn-lg rounded-circle shadow" hx-get="{% url 'vocabulary_detail' folder.id next_word.id %}" hx-target="#reviewModalContent" hx-swap="innerHTML">
+		<i class="bi bi-arrow-right-circle" style="font-size: 1.4rem"></i>
+	</button>
+	{% endif %}
+	<button type="button" class="btn btn-secondary btn-lg rounded-circle shadow" data-bs-dismiss="modal">
+		<i class="bi bi-x-circle" style="font-size: 1.5rem"></i>
+	</button>
+</div>

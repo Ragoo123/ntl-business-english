@@ -1,9 +1,9 @@
+<!-- vocabulary/vocabulary.html -->
 {% extends "core/base.html" %} {% load static %} {% block title %} Vocabulary {% endblock title %} {% block content %}
 <div class="container my-3">
 	<div class="row mb-3">
 		<div class="col">
 			<h1>Vocabulary for {{ folder.name }}</h1>
-			
 		</div>
 	</div>
 
@@ -25,19 +25,19 @@
 					</p>
 
 					<div class="d-flex justify-content-start gap-2">
-						<button class="btn btn-secondary-custom btn-sm">Review</button>
-
-						<!-- DROPDOWN BUTTON -->
-						<div class="dropdown">
-							<button class="btn btn-primary-custom btn-sm dropdown-toggle" data-bs-toggle="dropdown">Quiz</button>
-
-							<ul class="dropdown-menu shadow">
-								<li><a class="dropdown-item text-primary-custom" href="#">Vocabulary</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Gap Fill</a></li>
-								<li><a class="dropdown-item text-primary-custom" href="#">Listening</a></li>
-							</ul>
-						</div>
+						
+						<button 						
+						class="btn btn-secondary-custom btn-sm" 
+						data-bs-toggle="modal" 
+						data-bs-target="#reviewModal" 
+						hx-get="{% url 'vocabulary_detail' folder.id word.id %}"
+						hx-target="#reviewModalContent"
+						hx-trigger="click"
+						hx-swap="innerHTML"
+						>Review</button>
 					</div>
+					
+					
 				</div>
 			</div>
 		</div>
@@ -47,5 +47,7 @@
 	</div>
 	<!-- END row -->
 </div>
+
+{% include 'vocabulary/vocabulary_modal.html' %}
 <!-- END container -->
 {% endblock content %}
