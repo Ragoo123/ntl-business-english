@@ -5,26 +5,32 @@
 
 /* Body text */
 body {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400; /* regular */
+	font-family: "Roboto", sans-serif;
+	font-weight: 400; /* regular */
 }
 
 /* Main headers */
-h1, h2, h3 {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700; /* bold */
+h1,
+h2,
+h3 {
+	font-family: "Roboto", sans-serif;
+	font-weight: 700; /* bold */
 }
 
 /* Subheadings / secondary text */
-h4, h5, h6 {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500; /* medium */
+h4,
+h5,
+h6 {
+	font-family: "Roboto", sans-serif;
+	font-weight: 500; /* medium */
 }
 
 /* Buttons, links, or emphasis */
-.btn, a, .highlight {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500; /* medium emphasis */
+.btn,
+a,
+.highlight {
+	font-family: "Roboto", sans-serif;
+	font-weight: 500; /* medium emphasis */
 }
 
 .hero-section {
@@ -141,10 +147,8 @@ h4, h5, h6 {
 .btn-secondary-custom {
 	background-color: var(--primary-blue);
 	border-color: var(--primary-blue);
-	color: white; 
-	
+	color: white;
 }
-
 
 .btn-primary-custom:hover {
 	background-color: #5c0d13; /* optional: darker shade on hover */
@@ -199,5 +203,3 @@ form .form-label {
 	margin-top: 3rem !important;
 	margin-bottom: 3rem !important;
 }
-
-

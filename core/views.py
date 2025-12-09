@@ -3,6 +3,7 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 from vocabulary.models import Folder
 
+
 # Create your views here.
 class indexView(View):
     def get(self, request):        

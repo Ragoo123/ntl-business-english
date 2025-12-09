@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'users',
     'vocabulary',
     # Allauth
     'django.contrib.sites',
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     # Import/Export
     'import_export',
+    
 ]
 
 SITE_ID = 1
@@ -159,3 +160,6 @@ ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*']
 ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+ACCOUNT_ADAPTER = "users.account_adapter.CustomAccountAdapter"
+
+
