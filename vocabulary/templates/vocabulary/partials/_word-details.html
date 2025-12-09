@@ -5,27 +5,30 @@
 {% endif %}
 
 <div class="modal-header border-0 bg-light">
-	<h3 class="modal-title fw-bold">Review Vocabulary</h3>
+	<h3 class="modal-title fw-bold fs-5">Review Vocabulary</h3>
+	<button type="button" class="btn btn-primary-custom btn-sm rounded-circle shadow" data-bs-dismiss="modal">
+		<i class="bi bi-x-circle"></i>
+	</button>
 </div>
 
 <div class="modal-body">
 	<div class="p-3 rounded-3 bg-primary-custom mb-3 border-start border-4 border-secondary-custom">
-		<p class="m-0 text-white fs-4">
+		<p class="m-0 text-white fs-2">
 			<strong>Word:</strong>
-			{{ word.word }}
+			{{ word.word | title }}
 		</p>
 	</div>
 
 	<div class="p-3 rounded-3 bg-light mb-3 border-start border-4 border-primary">
-		<p class="m-0">
-			<strong class="text-primary">Definition:</strong><br />
+		<p class="m-0 fs-5">
+			<strong class="text-primary">Definition:</strong>
 			{{ word.definition }}
 		</p>
 	</div>
 
 	<div class="p-3 rounded-3 bg-light border-start border-4 border-secondary">
-		<p class="m-0">
-			<strong class="text-secondary">Example:</strong><br />
+		<p class="m-0 fs-5">
+			<strong class="text-secondary">Example:</strong>
 			{{ word.example_sentence }}
 		</p>
 	</div>
@@ -41,7 +44,5 @@
 		<i class="bi bi-arrow-right-circle" style="font-size: 1.4rem"></i>
 	</button>
 	{% endif %}
-	<button type="button" class="btn btn-secondary btn-lg rounded-circle shadow" data-bs-dismiss="modal">
-		<i class="bi bi-x-circle" style="font-size: 1.5rem"></i>
-	</button>
+	
 </div>
