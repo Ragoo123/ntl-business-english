@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('core.urls')),
     path('', include('users.urls')),
     path('', include('vocabulary.urls')),
+    path('', include('quiz.urls')),
     
 ]

@@ -1,0 +1,7 @@
+{% extends "core/base.html" %} {% load static %} {% block title %}Quiz{% endblock %} {% block content %}
+<div class="container">
+	<div class="container" id="quizArea">
+		{% include "partials/_quiz_question.html" %}
+	</div>
+</div>
+{% endblock %}
