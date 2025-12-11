@@ -18,7 +18,3 @@ def dashboardView(request):
     }
     return render(request, "core/dashboard.html", context)
 
-
-@login_required
-def vocabularyView(request):
-    return render(request, "")
