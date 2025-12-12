@@ -1,0 +1,7 @@
+{# quiz/quiz_finished.html #}
+<div class="card shadow-lg border-0 rounded-xl my-4 bg-light text-center p-4">
+	<h2>🎉 Quiz finished</h2>
+	<p>You answered {{ quiz_score }} out of {{ total_questions }} correctly.</p>
+	<a href="#" class="btn btn-primary">Back to folders</a>
+	<button hx-get="#" hx-target="#quizArea" hx-swap="innerHTML" class="btn btn-secondary">Retry</button>
+</div>
