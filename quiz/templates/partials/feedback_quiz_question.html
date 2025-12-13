@@ -38,3 +38,12 @@
 		</div>
 	</div>
 </div>
+
+<div type='hidden' id='nextQuestion'
+	 data-hx-post="{% url 'load_next_question' %}"
+	 data-hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+	 data-hx-vals='{"folder_id": "{{ folder_id }}", "quiz_index": "{{ quiz_index }}", "quiz_score": "{{ quiz_score }}"}'
+	 data-hx-target="#quizArea"
+	 data-hx-swap="innerHTML transition:true"
+	 hx-trigger="load delay:1.5s once">
+</div>
