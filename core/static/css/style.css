@@ -250,3 +250,34 @@ form .form-label {
 .rounded-xxl {
 	border-radius: 3rem; /* bigger than rounded-xl (1.5rem) */
 }
+
+.choice-option.is-readonly.bg-danger {
+	animation: shake 0.4s ease;
+}
+
+.choice-option.is-readonly.bg-success {
+	animation: jump 0.35s ease;
+}
+
+@keyframes shake {
+	0%   { transform: translateX(0); }
+	20%  { transform: translateX(-6px); }
+	40%  { transform: translateX(6px); }
+	60%  { transform: translateX(-6px); }
+	80%  { transform: translateX(6px); }
+	100% { transform: translateX(0); }
+}
+
+@keyframes jump {
+	0%   { transform: translateY(0); }
+	30%  { transform: translateY(-10px); }
+	60%  { transform: translateY(0); }
+	100% { transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.choice-option.is-readonly.bg-danger,
+	.choice-option.is-readonly.bg-success {
+		animation: none;
+	}
+}
