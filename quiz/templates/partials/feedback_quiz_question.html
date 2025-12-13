@@ -13,17 +13,22 @@
 		<h3 class="mb-4 mt-2 px-3 py-4 rounded-xxl text-white shadow-sm bg-primary-custom">{{ current_question.question }}</h3>
 
 		<!-- Options Row -->
+		 
 
 		<div class="row g-4">
 			{% for option in current_question.options %}
 			<div class="col-12 col-sm-6 col-lg-3 d-flex"
-			hx-post="{% url 'check_answer' %}"
-			hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-			hx-vals='{"selected_option": "{{ option }}", "question_id": "{{ current_question.id }}"}'
-			hx-target="#quizArea"
-			hx-swap="innerHTML transition:true"
+
 			>
-				<div class="choice-option is-interactive flex-fill d-flex align-items-center justify-content-center">
+				<div class="choice-option is-readonly flex-fill d-flex align-items-center justify-content-center
+    {% if option == selected_option and option == correct_answer %}
+        bg-success text-white
+    {% elif option == selected_option and option != correct_answer %}
+        bg-danger text-white
+    {% elif option == correct_answer %}
+        bg-success text-white
+    {% endif %}
+">
 					<p>{{ option }}</p>
 				</div>
 			</div>

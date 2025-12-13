@@ -65,4 +65,38 @@ def quizView(request, folder_id):
 
 
 def checkAnswer(request):
-    return HttpResponse("ok")
+    #get data from POST
+    selected_option = request.POST.get('selected_option')
+    question_id = int(request.POST.get('question_id'))
+
+    #retrieve quiz data from session
+    quiz_data = request.session.get('quiz_data', [])
+    quiz_index = request.session.get('quiz_index', 0)
+    quiz_score = request.session.get('quiz_score', 0)
+    folder_id = request.session.get('folder_id')
+    folder_name = request.session.get('folder_name')
+
+    #current question
+    current_question = quiz_data[quiz_index]
+    correct_answer = current_question['correct_answer']
+
+    is_correct = False
+
+    if selected_option == correct_answer:
+        is_correct = True
+        quiz_score += 1
+        request.session['quiz_score'] = quiz_score\
+        
+    context = {
+        "is_correct": is_correct,
+        "correct_answer": correct_answer,
+        "current_question": current_question,
+        "quiz_index": quiz_index + 1,
+        "total_questions": len(quiz_data),
+        "quiz_score": quiz_score,
+        "folder_id": folder_id,
+        "folder_name": folder_name, 
+        "selected_option": selected_option,      
+    }
+
+    return render(request, "partials/feedback_quiz_question.html", context)
