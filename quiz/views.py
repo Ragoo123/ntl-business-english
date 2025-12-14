@@ -45,6 +45,7 @@ def quizView(request, folder_id):
         request.session['quiz_data'] = build_quiz_data(words)
         request.session['quiz_index'] = 0
         request.session['quiz_score'] = 0
+        request.session['answered_questions'] = []
         request.session.modified = True
 
     quiz_data = request.session['quiz_data']
@@ -85,7 +86,17 @@ def checkAnswer(request):
     if selected_option == correct_answer:
         is_correct = True
         quiz_score += 1
-        request.session['quiz_score'] = quiz_score\
+        request.session['quiz_score'] = quiz_score
+    
+    answer_record = {
+        'question': current_question['question'],
+        'correct_answer': current_question['correct_answer'],
+        'selected_option': selected_option,
+        'is_correct': is_correct
+    }
+    answered_questions = request.session.get('answered_questions', [])
+    answered_questions.append(answer_record)
+    request.session['answered_questions'] = answered_questions
         
     context = {
         "is_correct": is_correct,
@@ -106,6 +117,7 @@ def nextQuestion(request):
     quiz_data = request.session.get('quiz_data', [])
     quiz_index = request.session.get('quiz_index', 0) + 1  #move to next question
     request.session['quiz_index'] = quiz_index
+    answered_questions = request.session.get('answered_questions', [])
     request.session.modified = True
 
     folder_id = request.session.get('folder_id')
@@ -120,6 +132,7 @@ def nextQuestion(request):
             "folder_name": folder_name,
             'percent': int((request.session.get('quiz_score', 0) / len(quiz_data)) * 100) if len(quiz_data) > 0 else 0,
             'incorrect': len(quiz_data) - request.session.get('quiz_score', 0),
+            'answered_questions': answered_questions,
         }
         return render(request, "quiz/quiz_finished.html", context)
     else:

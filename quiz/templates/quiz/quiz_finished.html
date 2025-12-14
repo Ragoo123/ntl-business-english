@@ -1,6 +1,7 @@
 <div class="card-body text-center">
 	<!-- Headline -->
-	<h3 class="text-primary fw-bold mb-4">🏆 Quiz Results 🏆</h3>
+	<h3 class="text-primary fw-bold mt-2 mb-4">
+		<span class="px-3 py-2 rounded-xl shadow-sm bg-primary-custom text-light"> Quiz Results </span></h3>
 
 	<!-- Four-column Score Summary -->
 	<div class="row text-center mb-4 gx-4">
@@ -53,7 +54,7 @@
 
 		<!-- Quit -->
 		<a href="#" class="col-6 col-md-3 text-decoration-none">
-			<div class="bg-light bg-gradient text-dark p-3 rounded shadow-sm border border-primary cursor-pointer quiz-card">
+			<div class="bg-light bg-gradient text-dark p-3 rounded-xl shadow-sm border border-primary cursor-pointer quiz-card">
 				<h5 class="mb-1">Quit</h5>
 				<p class="display-6 fw-bold">🛑</p>
 			</div>
@@ -80,10 +81,10 @@
 	</div>
 
 	<!-- Collapse Review Section -->
-	<div class="collapse" id="reviewBox"> Review Box Here{#{% include 'components/_review_answers.html' %}#}</div>
+	<div class="collapse bg-primary-custom text-dark p-3 rounded shadow-sm" id="reviewBox"> {% include 'partials/_review_answers.html' %}
+		
+	</div>
 
-	<!-- Footer -->
-	<div class="mt-4 text-muted small fst-italic">Thanks for playing! 🎉👏</div>
 </div>
 
 {% comment %} <script>

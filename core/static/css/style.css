@@ -246,7 +246,15 @@ form .form-label {
 	border-radius: 3rem; /* bigger than rounded-xl (1.5rem) */
 }
 
+.bg-danger-light {
+    background-color: #e3b8bb !important; /* Bootstrap danger alert color */
+	border-left: 4px solid var(--primary-red) !important; /* Bootstrap red */
+}
 
+.bg-success-light {
+    background-color: #b6e3c3 !important; /* Bootstrap success alert color */
+	border-left: 4px solid #198754 !important; /* Bootstrap green */
+}
 
 /* .choice-option.is-readonly.bg-danger {
 	animation: shake 0.4s ease;
