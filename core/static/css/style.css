@@ -260,7 +260,7 @@ form .form-label {
 	animation: shake 0.4s ease;
 } */
 
-.choice-option.is-readonly.bg-success {
+/* .choice-option.is-readonly.bg-success {
 	animation: jump 0.35s ease;
 }
 
@@ -305,4 +305,4 @@ form .form-label {
 	.choice-option.is-readonly.bg-success {
 		animation: none;
 	}
-}
+} */

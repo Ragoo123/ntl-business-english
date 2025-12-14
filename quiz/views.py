@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from vocabulary.models import Folder, VocabularyWord
 from django.http import HttpResponse
 import random
@@ -29,30 +29,82 @@ def build_quiz_data(words):
     return quiz_data
 
 
+def quizViewGapFill(request, folder_id):
+    folder = get_object_or_404(Folder, id=folder_id)
+    words = list(VocabularyWord.objects.filter(folder=folder))
+    random.shuffle(words)
+    print(words[0].word)
+    print(words[0].example_sentence)
+
+    for word in words:
+        word.gap_fill_sentence = word.example_sentence.replace(word.word, "_____")
+
+    context = {
+        "folder_id": folder.id,
+        "folder_name": folder.name,
+        "words": words,
+    }
+
+    return render(request, "quiz/quiz_gapfill.html", context)
+
 def quizView(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
 
-    # Fetch & shuffle words
-    words = list(VocabularyWord.objects.filter(folder=folder))
-    random.shuffle(words)
+    # Identify current quiz context
+    current_folder_id = folder.id
+    session_folder_id = request.session.get('quiz_folder_id')
 
-    # Set basic session info
-    request.session['folder_id'] = folder.id
-    request.session['folder_name'] = folder.name
+    # Get quiz state safely
+    quiz_data = request.session.get('quiz_data', [])
+    quiz_index = request.session.get('quiz_index', 0)
 
-    # Load or create quiz_data
-    if 'quiz_data' not in request.session:
+    # --------------------------------------------
+    # 🔴 CHANGE 1: If quiz is FINISHED and user refreshes
+    # → reset quiz and start again
+    # This prevents broken refresh on results page
+    # --------------------------------------------
+    if quiz_data and quiz_index >= len(quiz_data):
+        request.session.pop('quiz_data', None)
+        request.session.pop('quiz_index', None)
+        request.session.pop('quiz_score', None)
+        request.session.pop('answered_questions', None)
+        request.session.pop('quiz_folder_id', None)
+        request.session.pop('folder_id', None)
+        request.session.pop('folder_name', None)
+
+
+
+        return redirect('quiz', folder_id=folder.id)
+
+    # --------------------------------------------
+    # 🔴 CHANGE 2: Start a NEW quiz only if:
+    # - No quiz exists OR
+    # - Folder has changed
+    # --------------------------------------------
+    if not quiz_data or session_folder_id != current_folder_id:
+        words = list(VocabularyWord.objects.filter(folder=folder))
+        random.shuffle(words)
+
+        request.session['quiz_folder_id'] = current_folder_id
         request.session['quiz_data'] = build_quiz_data(words)
         request.session['quiz_index'] = 0
         request.session['quiz_score'] = 0
+        request.session['folder_id'] = folder.id
+        request.session['folder_name'] = folder.name
         request.session['answered_questions'] = []
         request.session.modified = True
 
-    quiz_data = request.session['quiz_data']
-    quiz_index = request.session.get('quiz_index', 0)
+        quiz_data = request.session['quiz_data']
+        quiz_index = 0  # reset index explicitly
 
-    current_question = quiz_data[quiz_index] if quiz_data else None
+    # --------------------------------------------
+    # 🔴 CHANGE 3: Safe access after guards
+    # --------------------------------------------
+    current_question = quiz_data[quiz_index]
 
+    # --------------------------------------------
+    # Context for active quiz page
+    # --------------------------------------------
     context = {
         "folder_id": folder.id,
         "folder_name": folder.name,
