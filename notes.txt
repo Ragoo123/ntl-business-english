@@ -1,2 +1,1 @@
-fix sweets colors
-quiz
+i think view is mostly done, need to find a way to display in templlete

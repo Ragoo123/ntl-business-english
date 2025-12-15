@@ -28,24 +28,105 @@ def build_quiz_data(words):
 
     return quiz_data
 
+def build_gap_fill_data(words):
+    """Generate full gap fill data list with shuffled options."""
+    gap_fill_data = []
+
+    for word in words:
+        correct = word.word
+        all_words = [w.word for w in words if w.word != correct]
+
+        # Pick 3 incorrect options
+        incorrect = random.sample(all_words, min(3, len(all_words)))
+
+        # Combine and shuffle
+        options = incorrect + [correct]
+        random.shuffle(options)  
+
+        sentence_with_blank = word.example_sentence.lower().replace(
+            word.word,
+            "_____",
+            1  # replace only first occurrence
+        )
+      
+        gap_fill_data.append({
+            "id": word.id,
+            "question": sentence_with_blank.strip().capitalize(),
+            "options": options,
+            "correct_answer": correct,
+        })
+
+    return gap_fill_data
+
 
 def quizViewGapFill(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
-    words = list(VocabularyWord.objects.filter(folder=folder))
-    random.shuffle(words)
-    print(words[0].word)
-    print(words[0].example_sentence)
 
-    for word in words:
-        word.gap_fill_sentence = word.example_sentence.replace(word.word, "_____")
+    # Identify current quiz context
+    current_folder_id = folder.id
+    session_folder_id = request.session.get('quiz_folder_id')
+    current_quiz_type = 'gapfill'
+
+    # Get quiz state safely
+    gap_fill_quiz_data = request.session.get('quiz_data', [])
+    gap_fill_quiz_index = request.session.get('quiz_index', 0)
+
+       # --------------------------------------------
+    # 🔴 CHANGE 1: If quiz is FINISHED and user refreshes
+    # → reset quiz and start again
+    # This prevents broken refresh on results page
+    # --------------------------------------------
+    if gap_fill_quiz_data and gap_fill_quiz_index >= len(gap_fill_quiz_data):
+        request.session.pop('quiz_data', None)
+        request.session.pop('quiz_index', None)
+        request.session.pop('quiz_score', None)
+        request.session.pop('answered_questions', None)
+        request.session.pop('quiz_folder_id', None)
+        request.session.pop('folder_id', None)
+        request.session.pop('folder_name', None)
+        request.session.pop('quiz_type', None)
+
+        return redirect('quiz_gapfill', folder_id=folder.id)
+    
+    # --------------------------------------------
+    # 🔴 CHANGE 2: Start a NEW quiz only if:
+    # - No quiz exists OR
+    # - Folder has changed
+    # --------------------------------------------
+    if not gap_fill_quiz_data or session_folder_id != current_folder_id or request.session.get('quiz_type') != current_quiz_type:
+        words = list(VocabularyWord.objects.filter(folder=folder))
+        random.shuffle(words)
+
+        request.session['quiz_folder_id'] = current_folder_id
+        request.session['quiz_data'] = build_gap_fill_data(words)
+        request.session['quiz_index'] = 0
+        request.session['quiz_score'] = 0
+        request.session['folder_id'] = folder.id
+        request.session['folder_name'] = folder.name
+        request.session['answered_questions'] = []
+        request.session['quiz_type'] = 'gapfill'
+        request.session.modified = True
+
+        gap_fill_quiz_data = request.session['quiz_data']
+        gap_fill_quiz_index = 0  # reset index explicitly
+
+        # --------------------------------------------
+    # 🔴 CHANGE 3: Safe access after guards
+    # --------------------------------------------
+    current_question = gap_fill_quiz_data[gap_fill_quiz_index]
 
     context = {
         "folder_id": folder.id,
         "folder_name": folder.name,
-        "words": words,
+        "gap_fill_data": gap_fill_quiz_data, 
+        "current_question": current_question,
+        "quiz_index": gap_fill_quiz_index + 1,
+        "total_questions": len(gap_fill_quiz_data),
+        "quiz_score": request.session.get('quiz_score', 0),
+        "quiz_partial": "partials/_quiz_gapfill.html",
     }
 
-    return render(request, "quiz/quiz_gapfill.html", context)
+    return render(request, "quiz/quiz.html", context)
 
 def quizView(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
@@ -53,6 +134,9 @@ def quizView(request, folder_id):
     # Identify current quiz context
     current_folder_id = folder.id
     session_folder_id = request.session.get('quiz_folder_id')
+    current_quiz_type = 'mcq'
+
+
 
     # Get quiz state safely
     quiz_data = request.session.get('quiz_data', [])
@@ -71,8 +155,7 @@ def quizView(request, folder_id):
         request.session.pop('quiz_folder_id', None)
         request.session.pop('folder_id', None)
         request.session.pop('folder_name', None)
-
-
+        request.session.pop('quiz_type', None)
 
         return redirect('quiz', folder_id=folder.id)
 
@@ -81,7 +164,7 @@ def quizView(request, folder_id):
     # - No quiz exists OR
     # - Folder has changed
     # --------------------------------------------
-    if not quiz_data or session_folder_id != current_folder_id:
+    if not quiz_data or session_folder_id != current_folder_id or request.session.get('quiz_type') != current_quiz_type:
         words = list(VocabularyWord.objects.filter(folder=folder))
         random.shuffle(words)
 
@@ -92,6 +175,7 @@ def quizView(request, folder_id):
         request.session['folder_id'] = folder.id
         request.session['folder_name'] = folder.name
         request.session['answered_questions'] = []
+        request.session['quiz_type'] = 'mcq'
         request.session.modified = True
 
         quiz_data = request.session['quiz_data']
@@ -112,6 +196,7 @@ def quizView(request, folder_id):
         "quiz_index": quiz_index + 1,
         "total_questions": len(quiz_data),
         "quiz_score": request.session.get('quiz_score', 0),
+        "quiz_partial": "partials/_quiz_question.html",
     }
 
     return render(request, "quiz/quiz.html", context)
