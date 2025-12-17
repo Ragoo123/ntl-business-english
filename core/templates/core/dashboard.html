@@ -29,8 +29,10 @@
 							</ul>
 						</div>
 
-						<!-- Trophy (example static for now) -->
-						<span class="badge rounded-pill bg-secondary fs-5" title="Perfect Score!"> <i class="bi bi-trophy-fill"></i> </span>
+						<!-- Trophy icon, extra quiz types need to be manually updated -->
+						<span class="badge rounded-pill  fs-5
+						{% if folder.scores.vocabulary == 10 and folder.scores.gapfill == 10 and folder.scores.listening == 10 and folder.scores.reading == 10 %} bg-warning text-dark {% else %} bg-secondary text-white {% endif %}
+						" title="Perfect Score!"> <i class="bi bi-trophy-fill"></i> </span>
 					</div>
 
 					<hr class="my-3" />
@@ -39,10 +41,13 @@
 					<div class="mb-2">
 						<small class="text-muted d-block mb-1">Last Scores:</small>
 						<div class="d-flex gap-2 flex-wrap justify-content-center">
-							<span class="badge bg-secondary">Vocabulary: 7/10</span>
-							<span class="badge bg-secondary">Gap Fill: 3/10</span>
-							<span class="badge bg-secondary">Listening: 0/10</span>
-							<span class="badge bg-secondary">Reading: 0/10</span>
+							<span class="badge {% if folder.scores.vocabulary == 10 %} bg-success {% else %} bg-secondary {% endif %}"> Vocabulary: {{ folder.scores.vocabulary }} /10 </span>
+
+							<span class="badge {% if folder.scores.gapfill == 10 %} bg-success {% else %} bg-secondary {% endif %}"> Gap Fill: {{ folder.scores.gapfill }} /10 </span>
+
+							<span class="badge {% if folder.scores.listening == 10 %} bg-success {% else %} bg-secondary {% endif %}"> Listening: {{ folder.scores.listening }} /10 </span>
+
+							<span class="badge {% if folder.scores.reading == 10 %} bg-success {% else %} bg-secondary {% endif %}"> Reading: {{ folder.scores.reading }} /10 </span>	
 						</div>
 					</div>
 				</div>

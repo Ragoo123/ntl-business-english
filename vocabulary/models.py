@@ -26,6 +26,16 @@ class VocabularyWord(models.Model):
 
     def __str__(self):
         return self.word
+    
+class ListeningQuiz(models.Model):
+    folder = models.ForeignKey(Folder, on_delete=models.CASCADE, related_name='listening_quizzes')
+    audio_file = models.FileField(upload_to='listening_quizzes/')
+    transcript = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Listening Quiz for {self.folder.name}"
 
 # ---------------------------
 # Quiz Score Model
@@ -46,3 +56,17 @@ class QuizScore(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.folder.name} ({self.quiz_type}): {self.score}"
+    
+    class Meta:
+        unique_together = ('user', 'folder', 'quiz_type')
+
+    @property
+    def is_perfect(self):
+        return all([
+            self.vocabulary == 10,
+            self.gapfill == 10,
+            self.listening == 10,
+            self.reading == 10,
+        ])
+
+

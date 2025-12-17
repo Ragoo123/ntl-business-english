@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from vocabulary.models import Folder, VocabularyWord
+from vocabulary.models import Folder, VocabularyWord, QuizScore, User
 from django.http import HttpResponse
 import random
 
@@ -58,6 +58,26 @@ def build_gap_fill_data(words):
 
     return gap_fill_data
 
+def save_best_score(user, folder, quiz_type, new_score):
+    existing = QuizScore.objects.filter(
+        user=user,
+        folder=folder,
+        quiz_type=quiz_type
+    ).first()
+
+    if existing:
+        # Only update if new score is better
+        if new_score > existing.score:
+            existing.score = new_score
+            existing.save()
+    else:
+        # No score yet → create one
+        QuizScore.objects.create(
+            user=user,
+            folder=folder,
+            quiz_type=quiz_type,
+            score=new_score
+        )
 
 def quizViewGapFill(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
@@ -134,7 +154,7 @@ def quizView(request, folder_id):
     # Identify current quiz context
     current_folder_id = folder.id
     session_folder_id = request.session.get('quiz_folder_id')
-    current_quiz_type = 'mcq'
+    current_quiz_type = 'vocabulary'
 
 
 
@@ -175,7 +195,7 @@ def quizView(request, folder_id):
         request.session['folder_id'] = folder.id
         request.session['folder_name'] = folder.name
         request.session['answered_questions'] = []
-        request.session['quiz_type'] = 'mcq'
+        request.session['quiz_type'] = 'vocabulary'
         request.session.modified = True
 
         quiz_data = request.session['quiz_data']
@@ -262,6 +282,17 @@ def nextQuestion(request):
 
     if quiz_index >= len(quiz_data):
         #quiz is over
+        user = request.user
+        folder = get_object_or_404(Folder, id=folder_id)
+
+
+        save_best_score(
+            user=request.user,
+            folder=folder,
+            quiz_type=request.session.get('quiz_type', 'vocabulary'),
+            new_score=request.session.get('quiz_score', 0)
+        )
+                
         context = {
             "quiz_score": request.session.get('quiz_score', 0),
             "total_questions": len(quiz_data),
