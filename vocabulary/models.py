@@ -36,6 +36,22 @@ class ListeningQuiz(models.Model):
 
     def __str__(self):
         return f"Listening Quiz for {self.folder.name}"
+    
+class ListeningQuestion(models.Model):
+    listening_quiz = models.ForeignKey(ListeningQuiz, on_delete=models.CASCADE, related_name='questions')
+    question_text = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.question_text
+    
+class ListeningOption(models.Model):
+    question = models.ForeignKey(ListeningQuestion, on_delete=models.CASCADE, related_name='options')
+    option_text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        status = "✓" if self.is_correct else "✗"
+        return f"{status} {self.option_text}"
 
 # ---------------------------
 # Quiz Score Model

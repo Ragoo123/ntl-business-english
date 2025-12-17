@@ -1,7 +1,90 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from vocabulary.models import Folder, VocabularyWord, QuizScore, User
+from vocabulary.models import Folder, VocabularyWord, QuizScore, User, ListeningQuiz, ListeningQuestion, ListeningOption
 from django.http import HttpResponse
 import random
+
+def quizViewListening(request, folder_id):
+    folder = get_object_or_404(Folder, id=folder_id)
+
+    current_folder_id = folder.id
+    session_folder_id = request.session.get('quiz_folder_id')
+    current_quiz_type = 'listening'
+
+    quiz_question_ids = request.session.get('quiz_data', [])
+    quiz_index = request.session.get('quiz_index', 0)
+
+    # --------------------------------------------
+    # RESET if finished & refreshed
+    # --------------------------------------------
+    if quiz_question_ids and quiz_index >= len(quiz_question_ids):
+        for key in [
+            'quiz_data', 'quiz_index', 'quiz_score',
+            'answered_questions', 'quiz_folder_id',
+            'folder_id', 'folder_name', 'quiz_type'
+        ]:
+            request.session.pop(key, None)
+
+        return redirect('quiz_listening', folder_id=folder.id)
+
+    # --------------------------------------------
+    # START NEW QUIZ
+    # --------------------------------------------
+    if (
+        not quiz_question_ids
+        or session_folder_id != current_folder_id
+        or request.session.get('quiz_type') != current_quiz_type
+    ):
+        listening_quiz = ListeningQuiz.objects.filter(folder=folder).first()
+
+        questions = ListeningQuestion.objects.filter(
+            listening_quiz=listening_quiz
+        ).values_list('id', flat=True)
+        questions = list(questions)
+        random.shuffle(questions)
+
+        request.session['quiz_data'] = list(questions)
+        request.session['quiz_index'] = 0
+        request.session['quiz_score'] = 0
+        request.session['quiz_folder_id'] = current_folder_id
+        request.session['folder_name'] = folder.name
+        request.session['quiz_type'] = 'listening'
+        request.session['answered_questions'] = []
+        request.session.modified = True
+
+        quiz_question_ids = request.session['quiz_data']
+        quiz_index = 0
+
+    # --------------------------------------------
+    # SAFE FETCH CURRENT QUESTION
+    # --------------------------------------------
+    question_id = quiz_question_ids[quiz_index]
+
+    current_question = (
+        ListeningQuestion.objects
+        .prefetch_related('options')
+        .get(id=question_id)
+    )
+
+    options = list(current_question.options.all())
+    print(options, 'before')
+    random.shuffle(options)
+    print(options, 'after')
+
+    listening_quiz = current_question.listening_quiz
+
+    context = {
+        "folder_name": folder.name,
+        "current_audio_quiz": listening_quiz,
+        "current_question": current_question,
+        "options": options,
+        "quiz_index": quiz_index + 1,
+        "total_questions": len(quiz_question_ids),
+        "quiz_score": request.session.get('quiz_score', 0),
+        "quiz_type": current_quiz_type,
+        "quiz_partial": "partials/_quiz_listening.html",
+    }
+
+    return render(request, 'quiz/quiz.html', context)
 
 
 def build_quiz_data(words):

@@ -1,9 +1,21 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from django.contrib.auth.models import User
-from .models import Folder, VocabularyWord, QuizScore
+from .models import Folder, VocabularyWord, QuizScore, ListeningQuiz, ListeningQuestion, ListeningOption
 from .resources import VocabularyResource
 
+
+@admin.register(ListeningQuestion)
+class ListeningQuestionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'listening_quiz', 'question_text')
+
+@admin.register(ListeningOption)
+class ListeningOptionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'question', 'option_text', 'is_correct')
+
+@admin.register(ListeningQuiz)
+class ListeningQuizAdmin(admin.ModelAdmin):
+    list_display = ('id', 'folder', 'audio_file', 'created_at')
 
 @admin.register(VocabularyWord)
 class VocabularyAdmin(ImportExportModelAdmin):
