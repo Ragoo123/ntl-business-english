@@ -61,6 +61,7 @@ def quizViewListening(request, folder_id):
 
             option_list = []
             correct_option_id = None
+            correct_option_text = None
 
             for opt in options:
                 option_list.append({
@@ -69,13 +70,16 @@ def quizViewListening(request, folder_id):
                 })
                 if opt.is_correct:
                     correct_option_id = opt.id
+                    correct_option_text = opt.option_text
 
             quiz_data.append({
                 "id": q.id,
                 "question_text": q.question_text,
                 "options": option_list,
-                "correct_option_id": correct_option_id
+                "correct_option_id": correct_option_id,
+                "correct_option_text": correct_option_text
             })
+        print(quiz_data, "<<< quiz data")
 
         request.session['quiz_data'] = quiz_data
         request.session['quiz_index'] = 0
@@ -133,6 +137,8 @@ def checkAnswerListening(request):
         "selected_option": selected_option,
         "selected_option_text": selected_option_text,
         "correct_option": correct_option_id,
+        "correct_option_text": current_question['correct_option_text'],
+        
         "is_correct": is_correct,
     })
     request.session['answered_questions'] = answered_questions
@@ -142,8 +148,8 @@ def checkAnswerListening(request):
     request.session.modified = True
 
     context = {
-        "current_question": current_question,          # ✅ FROM SESSION
-        "options": current_question["options"],        # ✅ FROM SESSION
+        "current_question": current_question,
+        "options": current_question["options"],
         "selected_option": selected_option,
         "correct_option_id": correct_option_id,
         "is_correct": is_correct,
@@ -166,15 +172,14 @@ def nextQuestionListening(request):
     folder_name = request.session.get('folder_name')
     quiz_score = request.session.get('quiz_score', 0)
     answered_questions = request.session.get('answered_questions', [])
-    current_question = quiz_data[quiz_index - 1]
-    current_correct = current_question['correct_option_id']
+    current_question = quiz_data[quiz_index - 1]  # last question answered
+
 
     # --------------------------------------------
     # FINISHED QUIZ
     # --------------------------------------------
     if quiz_index >= len(quiz_data):
         folder = get_object_or_404(Folder, id=folder_id)
-        print("answered_questions:", answered_questions)
 
         save_best_score(
             user=request.user,
@@ -187,7 +192,6 @@ def nextQuestionListening(request):
             "quiz_index": quiz_index,
             "quiz_data": quiz_data,
             "current_question": current_question,
-            "current_correct": current_correct,
             "answered_questions": answered_questions,
             "quiz_score": quiz_score,
             "total_questions": len(quiz_data),
@@ -195,9 +199,11 @@ def nextQuestionListening(request):
             "folder_name": folder_name,
             "incorrect": len(quiz_data) - quiz_score,
             "percent": int((quiz_score / len(quiz_data)) * 100) if quiz_data else 0,
+            "quiz_review_partial": "partials/_review_answers_listening.html",
         }
 
         return render(request, "quiz/quiz_finished.html", context)
+    
 
     # --------------------------------------------
     # NEXT QUESTION (FROM SESSION)
@@ -516,6 +522,7 @@ def nextQuestion(request):
             'percent': int((request.session.get('quiz_score', 0) / len(quiz_data)) * 100) if len(quiz_data) > 0 else 0,
             'incorrect': len(quiz_data) - request.session.get('quiz_score', 0),
             'answered_questions': answered_questions,
+            "quiz_review_partial": "partials/_review_answers.html",
         }
         return render(request, "quiz/quiz_finished.html", context)
     else:
