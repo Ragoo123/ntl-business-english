@@ -1,1 +1,1 @@
-i think view is mostly done, need to find a way to display in templlete
+listening needs to collect incorrect answers and display incorrect answers

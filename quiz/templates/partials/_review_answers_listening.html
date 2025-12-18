@@ -1,0 +1,25 @@
+<!-- quiz/templates/partials/_review_answers_listening.html -->
+<h4 class="text-center mt-2 mb-4 ">
+    <span class="bg-light px-3 py-2 shadow-sm rounded-xl" >Review Your Answers</span></h4>
+{% for answer in answered_questions %}
+			<div class="card mb-3 shadow-sm
+            
+            {% if answer.selected_option == answer.correct_option %}
+                bg-success-light
+            {% else %}
+                bg-danger-light 
+            {% endif %}
+            ">
+<div class="card-body">
+    <h5 class="card-title">Q: What does '{{ answer.question }}' mean?</h5>
+
+    <p class="card-text mb-0">
+        <strong>Your Answer:</strong> {{ answer.selected_option_text }}
+    </p>
+
+    <p class="card-text {% if answer.selected_option == answer.correct_option %}invisible{% endif %}">
+        <strong>Correct Answer:</strong> {{ answer.current_correct_text }}
+    </p>
+</div>
+			</div>
+		{% endfor %}

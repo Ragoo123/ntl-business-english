@@ -10,17 +10,18 @@ def quizViewListening(request, folder_id):
     session_folder_id = request.session.get('quiz_folder_id')
     current_quiz_type = 'listening'
 
-    quiz_question_ids = request.session.get('quiz_data', [])
+    quiz_data = request.session.get('quiz_data', [])
     quiz_index = request.session.get('quiz_index', 0)
 
     # --------------------------------------------
-    # RESET if finished & refreshed
+    # RESET if finished
     # --------------------------------------------
-    if quiz_question_ids and quiz_index >= len(quiz_question_ids):
+    if quiz_data and quiz_index >= len(quiz_data):
         for key in [
             'quiz_data', 'quiz_index', 'quiz_score',
             'answered_questions', 'quiz_folder_id',
-            'folder_id', 'folder_name', 'quiz_type'
+            'folder_id', 'folder_name', 'quiz_type',
+            'audio_transcript', 'audio_url'
         ]:
             request.session.pop(key, None)
 
@@ -30,61 +31,192 @@ def quizViewListening(request, folder_id):
     # START NEW QUIZ
     # --------------------------------------------
     if (
-        not quiz_question_ids
+        not quiz_data
         or session_folder_id != current_folder_id
         or request.session.get('quiz_type') != current_quiz_type
     ):
         listening_quiz = ListeningQuiz.objects.filter(folder=folder).first()
 
-        questions = ListeningQuestion.objects.filter(
-            listening_quiz=listening_quiz
-        ).values_list('id', flat=True)
-        questions = list(questions)
+        # Defensive check (prevents blank page)
+        if not listening_quiz:
+            return redirect('folder_list')
+
+        # Store audio ONCE
+        request.session['audio_url'] = (
+            listening_quiz.audio_file.url
+            if listening_quiz.audio_file else ""
+        )
+        request.session['audio_transcript'] = listening_quiz.transcript or ""
+
+        questions = list(
+            ListeningQuestion.objects.filter(listening_quiz=listening_quiz)
+        )
         random.shuffle(questions)
 
-        request.session['quiz_data'] = list(questions)
+        quiz_data = []
+
+        for q in questions:
+            options = list(q.options.all())
+            random.shuffle(options)
+
+            option_list = []
+            correct_option_id = None
+
+            for opt in options:
+                option_list.append({
+                    "id": opt.id,
+                    "text": opt.option_text
+                })
+                if opt.is_correct:
+                    correct_option_id = opt.id
+
+            quiz_data.append({
+                "id": q.id,
+                "question_text": q.question_text,
+                "options": option_list,
+                "correct_option_id": correct_option_id
+            })
+
+        request.session['quiz_data'] = quiz_data
         request.session['quiz_index'] = 0
         request.session['quiz_score'] = 0
-        request.session['quiz_folder_id'] = current_folder_id
+        request.session['quiz_folder_id'] = folder.id
+        request.session['folder_id'] = folder.id
         request.session['folder_name'] = folder.name
-        request.session['quiz_type'] = 'listening'
+        request.session['quiz_type'] = current_quiz_type
         request.session['answered_questions'] = []
         request.session.modified = True
 
-        quiz_question_ids = request.session['quiz_data']
         quiz_index = 0
 
     # --------------------------------------------
-    # SAFE FETCH CURRENT QUESTION
+    # CURRENT QUESTION
     # --------------------------------------------
-    question_id = quiz_question_ids[quiz_index]
-
-    current_question = (
-        ListeningQuestion.objects
-        .prefetch_related('options')
-        .get(id=question_id)
-    )
-
-    options = list(current_question.options.all())
-    print(options, 'before')
-    random.shuffle(options)
-    print(options, 'after')
-
-    listening_quiz = current_question.listening_quiz
+    current_question = quiz_data[quiz_index]
 
     context = {
+        "folder_id": folder.id,
         "folder_name": folder.name,
-        "current_audio_quiz": listening_quiz,
         "current_question": current_question,
-        "options": options,
         "quiz_index": quiz_index + 1,
-        "total_questions": len(quiz_question_ids),
+        "total_questions": len(quiz_data),
         "quiz_score": request.session.get('quiz_score', 0),
-        "quiz_type": current_quiz_type,
+        "audio_url": request.session.get('audio_url', ""),
+        "audio_transcript": request.session.get('audio_transcript', ""),
         "quiz_partial": "partials/_quiz_listening.html",
     }
 
-    return render(request, 'quiz/quiz.html', context)
+    return render(request, "quiz/quiz.html", context)
+
+def checkAnswerListening(request):
+    selected_option = int(request.POST.get('selected_option'))
+    selected_option_text = request.POST.get('selected_option_text')
+
+    quiz_data = request.session.get('quiz_data', [])
+    quiz_index = request.session.get('quiz_index', 0)
+    quiz_score = request.session.get('quiz_score', 0)
+
+    if quiz_index >= len(quiz_data):
+        return redirect('quiz_listening', folder_id=request.session.get('folder_id'))
+
+    current_question = quiz_data[quiz_index]
+    correct_option_id = current_question['correct_option_id']
+
+    is_correct = selected_option == correct_option_id
+    if is_correct:
+        quiz_score += 1
+        request.session['quiz_score'] = quiz_score
+
+    answered_questions = request.session.get('answered_questions', [])
+    answered_questions.append({
+        "question": current_question['question_text'],
+        "selected_option": selected_option,
+        "selected_option_text": selected_option_text,
+        "correct_option": correct_option_id,
+        "is_correct": is_correct,
+    })
+    request.session['answered_questions'] = answered_questions
+
+    # advance index AFTER using current_question
+    request.session['quiz_index'] = quiz_index + 1
+    request.session.modified = True
+
+    context = {
+        "current_question": current_question,          # ✅ FROM SESSION
+        "options": current_question["options"],        # ✅ FROM SESSION
+        "selected_option": selected_option,
+        "correct_option_id": correct_option_id,
+        "is_correct": is_correct,
+        "quiz_index": quiz_index + 1,
+        "total_questions": len(quiz_data),
+        "quiz_score": quiz_score,
+        "folder_id": request.session.get('folder_id'),
+        "folder_name": request.session.get('folder_name'),
+        "audio_url": request.session.get('audio_url'),
+        "audio_transcript": request.session.get('audio_transcript'),
+    }
+
+    return render(request, "partials/_feedback_listening.html", context)
+
+
+def nextQuestionListening(request):
+    quiz_data = request.session.get('quiz_data', [])
+    quiz_index = request.session.get('quiz_index', 0)
+    folder_id = request.session.get('folder_id')
+    folder_name = request.session.get('folder_name')
+    quiz_score = request.session.get('quiz_score', 0)
+    answered_questions = request.session.get('answered_questions', [])
+    current_question = quiz_data[quiz_index - 1]
+    current_correct = current_question['correct_option_id']
+
+    # --------------------------------------------
+    # FINISHED QUIZ
+    # --------------------------------------------
+    if quiz_index >= len(quiz_data):
+        folder = get_object_or_404(Folder, id=folder_id)
+        print("answered_questions:", answered_questions)
+
+        save_best_score(
+            user=request.user,
+            folder=folder,
+            quiz_type='listening',
+            new_score=quiz_score
+        )
+
+        context = {
+            "quiz_index": quiz_index,
+            "quiz_data": quiz_data,
+            "current_question": current_question,
+            "current_correct": current_correct,
+            "answered_questions": answered_questions,
+            "quiz_score": quiz_score,
+            "total_questions": len(quiz_data),
+            "folder_id": folder_id,
+            "folder_name": folder_name,
+            "incorrect": len(quiz_data) - quiz_score,
+            "percent": int((quiz_score / len(quiz_data)) * 100) if quiz_data else 0,
+        }
+
+        return render(request, "quiz/quiz_finished.html", context)
+
+    # --------------------------------------------
+    # NEXT QUESTION (FROM SESSION)
+    # --------------------------------------------
+    current_question = quiz_data[quiz_index]
+
+    context = {
+        "current_question": current_question,
+        "quiz_index": quiz_index + 1,
+        "total_questions": len(quiz_data),
+        "quiz_score": quiz_score,
+        "folder_id": folder_id,
+        "folder_name": folder_name,
+        "audio_url": request.session.get('audio_url', ''),
+        "audio_transcript": request.session.get('audio_transcript', ''),
+    }
+
+    return render(request, "partials/_quiz_listening.html", context)
+
 
 
 def build_quiz_data(words):
@@ -398,3 +530,7 @@ def nextQuestion(request):
             "folder_name": folder_name,
         }
         return render(request, "partials/_quiz_question.html", context)
+
+
+
+
