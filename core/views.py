@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
-from vocabulary.models import Folder, QuizScore
+from vocabulary.models import Folder, QuizScore, ListeningQuestion
 
 
 # Create your views here.
@@ -13,7 +13,6 @@ class indexView(View):
 def dashboardView(request):
     folders = Folder.objects.all()
     user = request.user
-
     user_scores = QuizScore.objects.filter(user=user)
 
     scores_map = {}

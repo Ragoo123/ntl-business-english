@@ -3,6 +3,10 @@ from vocabulary.models import Folder, VocabularyWord, QuizScore, User, Listening
 from django.http import HttpResponse
 import random
 
+def quizReadingView(request, folder_id):
+
+    return HttpResponse("Reading Quiz")
+
 def quizViewListening(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
 
