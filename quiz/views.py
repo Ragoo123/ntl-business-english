@@ -4,8 +4,12 @@ from django.http import HttpResponse
 import random
 
 def quizReadingView(request, folder_id):
+    
+    context = {
+        'quiz_partial': 'partials/_reading/_quiz_reading.html'
+    }
 
-    return HttpResponse("Reading Quiz")
+    return render(request, 'quiz/quiz.html', context)
 
 def quizViewListening(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
