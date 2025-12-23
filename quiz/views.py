@@ -103,13 +103,6 @@ def checkAnswerReading(request):
     selected_option = int(request.POST.get('selected_option'))
     question_id = int(request.POST.get('question_id'))
 
-    folder_id = request.session.get('quiz_folder_id')
-    folder = Folder.objects.prefetch_related(
-        'reading_texts__questions__options'
-    ).get(id=folder_id)
-
-    reading_text = folder.reading_texts.first()
-    print(reading_text.text)
     quiz_score = request.session.get('quiz_score', 0)
     quiz_index = request.session.get('quiz_index', 0)
     folder_name = request.session.get('folder_name')
@@ -142,7 +135,7 @@ def checkAnswerReading(request):
         'is_correct': selected_is_correct,
         'current_question': current_question,
         'options': options,
-        'reading_text': reading_text,
+
     }
 
     return render(request, "partials/_reading/_feedback_reading.html", context)
