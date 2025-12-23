@@ -1,15 +1,154 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from vocabulary.models import Folder, VocabularyWord, QuizScore, User, ListeningQuiz, ListeningQuestion, ListeningOption
-from django.http import HttpResponse
+from quiz.models import ReadingText, ReadingQuestion, ReadingOption
+from django.http import HttpResponse, Http404
 import random
 
 def quizReadingView(request, folder_id):
+    folder = get_object_or_404(
+        Folder.objects.prefetch_related(
+            'reading_texts__questions__options'
+        ),
+        id=folder_id
+    )
+
+    current_folder_id = folder.id
+    current_folder_name = folder.name
+    print(current_folder_name)
+    current_quiz_type = 'reading'
+    session_folder_id = request.session.get('quiz_folder_id')
+
+    reading_text = folder.reading_texts.first()
+    print(type(reading_text), 'reading_text')
     
+    if not reading_text:
+        raise Http404("No reading text found for this folder.")
+
+    quiz_data = request.session.get('quiz_data', [])
+    quiz_index = request.session.get('quiz_index', 0)
+
+    # --------------------------------------------
+    # RESET if finished
+    # --------------------------------------------
+    if quiz_data and quiz_index >= len(quiz_data):
+        for key in [
+            'quiz_data', 'quiz_index', 'quiz_score',
+            'quiz_folder_id', 'quiz_type'
+        ]:
+            request.session.pop(key, None)
+
+        return redirect('quiz_reading', folder_id=folder.id)
+
+    # --------------------------------------------
+    # START NEW QUIZ
+    # --------------------------------------------
+    if (
+        not quiz_data
+        or session_folder_id != current_folder_id
+        or request.session.get('quiz_type') != current_quiz_type
+    ):
+        questions = list(reading_text.questions.all())
+        random.shuffle(questions)
+
+        quiz_data = []
+
+        for question in questions:
+            options = list(question.options.all())
+            random.shuffle(options)
+
+            option_list = []
+
+            for option in options:
+                option_list.append({
+                    'id': option.id,
+                    'text': option.option_text
+                })
+
+            quiz_data.append({
+                'id': question.id,
+                'question_text': question.question_text,
+                'options': option_list
+            })
+
+        request.session['quiz_data'] = quiz_data
+        request.session['quiz_index'] = 0
+        request.session['quiz_score'] = 0
+        request.session['quiz_folder_id'] = current_folder_id
+        request.session['folder_name'] = current_folder_name
+        request.session['quiz_type'] = current_quiz_type
+        request.session.modified = True
+
+        quiz_index = 0
+
+    # --------------------------------------------
+    # CURRENT QUESTION
+    # --------------------------------------------
+    current_question = quiz_data[quiz_index]
+
     context = {
+        'folder': folder,
+        'reading_text': reading_text,
+        'current_question': current_question,
+        'quiz_index': quiz_index + 1,
+        'total_questions': len(quiz_data),
+        'quiz_score': request.session.get('quiz_score', 0),
         'quiz_partial': 'partials/_reading/_quiz_reading.html'
     }
 
     return render(request, 'quiz/quiz.html', context)
+
+
+
+def checkAnswerReading(request):
+    selected_option = int(request.POST.get('selected_option'))
+    question_id = int(request.POST.get('question_id'))
+
+    folder_id = request.session.get('quiz_folder_id')
+    folder = Folder.objects.prefetch_related(
+        'reading_texts__questions__options'
+    ).get(id=folder_id)
+
+    reading_text = folder.reading_texts.first()
+    print(reading_text.text)
+    quiz_score = request.session.get('quiz_score', 0)
+    quiz_index = request.session.get('quiz_index', 0)
+    folder_name = request.session.get('folder_name')
+    quiz_data = request.session.get('quiz_data', [])
+    current_question = quiz_data[quiz_index]
+    options = current_question['options']
+    
+    selected_is_correct = ReadingOption.objects.filter(id=selected_option, question_id=question_id, is_correct=True).exists()
+    
+    for option in options:
+        option['is_selected'] = option['id'] == selected_option
+        option['is_correct'] = selected_is_correct and option['is_selected']
+
+       
+
+    if selected_is_correct:
+        quiz_score += 1
+        request.session['quiz_score'] = quiz_score
+    else:
+        print('wrong')
+    
+    quiz_index += 1
+    request.session['quiz_index'] = quiz_index
+
+    context = {
+        'folder_name': folder_name,
+        'quiz_score': quiz_score,
+        'quiz_index': quiz_index,
+        'total_questions': len(quiz_data),
+        'is_correct': selected_is_correct,
+        'current_question': current_question,
+        'options': options,
+        'reading_text': reading_text,
+    }
+
+    return render(request, "partials/_reading/_feedback_reading.html", context)
+
+
+
 
 def quizViewListening(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
@@ -135,6 +274,7 @@ def checkAnswerListening(request):
     correct_option_id = current_question['correct_option_id']
 
     is_correct = selected_option == correct_option_id
+
     if is_correct:
         quiz_score += 1
         request.session['quiz_score'] = quiz_score

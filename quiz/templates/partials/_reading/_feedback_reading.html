@@ -1,0 +1,58 @@
+{% load static %}
+
+
+<!-- Feedback Card -->
+<div class="card shadow-lg border-0 rounded-xl my-4 bg-light">
+  <div class="card-body text-center shadow-sm p-4 d-flex flex-column justify-content-between rounded-xl border border-3 border-primary-custom">
+
+    <!-- Header -->
+    <div class="text-muted mb-3 d-flex justify-content-between gap-3">
+      <span class="px-3 py-2 rounded-xl shadow-sm bg-secondary-custom text-light">
+        Quiz: Reading: {{ folder_name }}
+      </span>
+
+      <span class="px-3 py-2 rounded-xl shadow-sm bg-primary-custom text-light">
+        Question {{ quiz_index }} / {{ total_questions }}
+      </span>
+
+      <span class="px-3 py-2 rounded-xl shadow-sm bg-success text-light">
+        Score: {{ quiz_score }}
+      </span>
+    </div>
+
+    <!-- Question -->
+    <h3 class="mb-4 mt-2 px-3 py-4 rounded-xxl text-white shadow-sm bg-primary-custom">
+      {{ current_question.question_text }}
+    </h3>
+
+    <!-- Options -->
+    <div class="row g-4">
+      {% for option in options %}
+      <div class="col-12 col-sm-6 col-lg-3 d-flex">
+        <div
+          class="choice-option flex-fill d-flex align-items-center justify-content-center option-card
+          {% if option.is_selected and option.is_correct %}
+            bg-success text-white
+          {% elif option.is_selected and not option.is_correct %}
+            bg-danger text-white
+          {% endif %}"
+        >
+          <p class="mb-0 ">{{ option.text }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% comment %} {# Auto-load next question when ready #}
+{#
+<div
+  hx-post="{% url 'load_next_reading_question' %}"
+  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+  hx-target="#quizArea"
+  hx-swap="innerHTML"
+  hx-trigger="load delay:1.5s once"
+></div>
+#} {% endcomment %}

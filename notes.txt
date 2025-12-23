@@ -1,1 +1,3 @@
-listening needs to collect incorrect answers and display incorrect answers
+reading view loads nice,
+
+fix up check answer

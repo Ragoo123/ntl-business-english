@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import ReadingText, ReadingQuestion, ReadingOption
 
+class ReadingOptionInline(admin.TabularInline):
+    model = ReadingOption
+    extra = 4
 
 @admin.register(ReadingText)
 class ReadingTextAdmin(admin.ModelAdmin):
@@ -12,7 +15,7 @@ class ReadingTextAdmin(admin.ModelAdmin):
 class ReadingQuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'reading', 'question_text')
     search_fields = ('question_text',)
-
+    inlines = [ReadingOptionInline]
 
 @admin.register(ReadingOption)
 class ReadingOptionAdmin(admin.ModelAdmin):
@@ -29,3 +32,4 @@ class ReadingOptionAdmin(admin.ModelAdmin):
         return obj.question.reading.text_title
 
     get_reading_title.short_description = "Reading Title"
+

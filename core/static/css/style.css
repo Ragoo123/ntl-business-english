@@ -306,3 +306,7 @@ form .form-label {
 		animation: none;
 	}
 } */
+
+.option-card {
+  min-height: 20rem;
+}
