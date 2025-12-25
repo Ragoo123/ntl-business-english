@@ -20,7 +20,7 @@
 			{% for option in options %}
 			<div class="col-12 col-sm-6 col-lg-3 d-flex">
 				<div
-					class="choice-option flex-fill d-flex align-items-center justify-content-center option-card {% if option.is_selected and option.is_correct %} bg-success text-white {% elif option.is_selected and not option.is_correct %} bg-danger text-white {% endif %}"
+					class="choice-option flex-fill d-flex align-items-center justify-content-center option-card {% if option.is_selected and option.is_correct %} bg-success text-white {% elif option.is_selected and not option.is_correct %} bg-danger text-white {% elif option.is_correct %} bg-success text-white {% endif %}"
 				>
 					<p class="mb-0">{{ option.text }}</p>
 				</div>

@@ -111,12 +111,11 @@ def checkAnswerReading(request):
     options = current_question['options']
     
     selected_is_correct = ReadingOption.objects.filter(id=selected_option, question_id=question_id, is_correct=True).exists()
+    correct_answer = ReadingOption.objects.filter(question_id=question_id, is_correct=True).first()
     
     for option in options:
         option['is_selected'] = option['id'] == selected_option
-        option['is_correct'] = selected_is_correct and option['is_selected']
-
-       
+        option['is_correct'] = option['id'] == correct_answer.id      
 
     if selected_is_correct:
         quiz_score += 1
