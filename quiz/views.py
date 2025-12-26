@@ -681,3 +681,5 @@ def nextQuestion(request):
 
 
 
+def nextQuestionReading(request):
+    return HttpResponse("nextQuestionReading")

@@ -30,6 +30,10 @@
 	</div>
 </div>
 
-{% comment %} {# Auto-load next question when ready #} {#
-<div hx-post="{% url 'load_next_reading_question' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-target="#quizArea" hx-swap="innerHTML" hx-trigger="load delay:1.5s once"></div>
-#} {% endcomment %}
+
+<div hx-post="{% url 'load_next_question_reading' %}" 
+hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
+hx-target="#quizArea" 
+hx-swap="innerHTML" 
+hx-trigger="load delay:1.5s once"></div>
+
