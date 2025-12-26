@@ -4,6 +4,7 @@ from quiz.models import ReadingText, ReadingQuestion, ReadingOption
 from django.http import HttpResponse, Http404
 import random
 
+
 def quizReadingView(request, folder_id):
     folder = get_object_or_404(
         Folder.objects.prefetch_related(
@@ -14,12 +15,12 @@ def quizReadingView(request, folder_id):
 
     current_folder_id = folder.id
     current_folder_name = folder.name
-    print(current_folder_name)
+
     current_quiz_type = 'reading'
     session_folder_id = request.session.get('quiz_folder_id')
 
     reading_text = folder.reading_texts.first()
-    print(type(reading_text), 'reading_text')
+
     
     if not reading_text:
         raise Http404("No reading text found for this folder.")
@@ -98,7 +99,6 @@ def quizReadingView(request, folder_id):
     return render(request, 'quiz/quiz.html', context)
 
 
-
 def checkAnswerReading(request):
     selected_option = int(request.POST.get('selected_option'))
     question_id = int(request.POST.get('question_id'))
@@ -120,16 +120,12 @@ def checkAnswerReading(request):
     if selected_is_correct:
         quiz_score += 1
         request.session['quiz_score'] = quiz_score
-    else:
-        print('wrong')
     
-    quiz_index += 1
-    request.session['quiz_index'] = quiz_index
 
     context = {
         'folder_name': folder_name,
         'quiz_score': quiz_score,
-        'quiz_index': quiz_index,
+        'quiz_index': quiz_index + 1,
         'total_questions': len(quiz_data),
         'is_correct': selected_is_correct,
         'current_question': current_question,
@@ -140,7 +136,28 @@ def checkAnswerReading(request):
     return render(request, "partials/_reading/_feedback_reading.html", context)
 
 
+def nextQuestionReading(request):
+    #get all required sessions to pass rhroigh to next question
+    quiz_score = request.session.get('quiz_score', 0)
+    quiz_index = request.session.get('quiz_index', 0) + 1
 
+    folder_name = request.session.get('folder_name')
+    quiz_data = request.session.get('quiz_data', [])
+    current_question = quiz_data[quiz_index]
+    options = current_question['options']
+
+    request.session['quiz_index'] = quiz_index
+
+    context = {
+        'folder_name': folder_name,
+        'quiz_score': quiz_score,
+        'quiz_index': quiz_index + 1,
+        'total_questions': len(quiz_data),
+        'current_question': current_question,
+        'options': options,
+    }
+    
+    return render(request, "partials/_reading/_quiz_reading_questions.html", context)
 
 def quizViewListening(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
@@ -218,7 +235,7 @@ def quizViewListening(request, folder_id):
                 "correct_option_id": correct_option_id,
                 "correct_option_text": correct_option_text
             })
-        print(quiz_data, "<<< quiz data")
+
 
         request.session['quiz_data'] = quiz_data
         request.session['quiz_index'] = 0
@@ -250,6 +267,7 @@ def quizViewListening(request, folder_id):
     }
 
     return render(request, "quiz/quiz.html", context)
+
 
 def checkAnswerListening(request):
     selected_option = int(request.POST.get('selected_option'))
@@ -364,7 +382,6 @@ def nextQuestionListening(request):
     return render(request, "partials/_quiz_listening.html", context)
 
 
-
 def build_quiz_data(words):
     """Generate full quiz data list with shuffled options."""
     quiz_data = []
@@ -388,6 +405,7 @@ def build_quiz_data(words):
         })
 
     return quiz_data
+
 
 def build_gap_fill_data(words):
     """Generate full gap fill data list with shuffled options."""
@@ -419,6 +437,7 @@ def build_gap_fill_data(words):
 
     return gap_fill_data
 
+
 def save_best_score(user, folder, quiz_type, new_score):
     existing = QuizScore.objects.filter(
         user=user,
@@ -439,6 +458,7 @@ def save_best_score(user, folder, quiz_type, new_score):
             quiz_type=quiz_type,
             score=new_score
         )
+
 
 def quizViewGapFill(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
@@ -508,6 +528,7 @@ def quizViewGapFill(request, folder_id):
     }
 
     return render(request, "quiz/quiz.html", context)
+
 
 def quizView(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
@@ -630,6 +651,7 @@ def checkAnswer(request):
 
     return render(request, "partials/feedback_quiz_question.html", context)
 
+
 def nextQuestion(request):
     #retrieve quiz data from session
     quiz_data = request.session.get('quiz_data', [])
@@ -678,8 +700,3 @@ def nextQuestion(request):
         }
         return render(request, "partials/_quiz_question.html", context)
 
-
-
-
-def nextQuestionReading(request):
-    return HttpResponse("nextQuestionReading")

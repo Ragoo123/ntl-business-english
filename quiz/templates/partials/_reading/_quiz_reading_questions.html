@@ -1,39 +1,34 @@
 {% load static %}
 
-<!-- Feedback Card -->
 <div class="card shadow-lg border-0 rounded-xl my-4 bg-light" id="quizAreaReading">
 	<div class="card-body text-center shadow-sm p-4 d-flex flex-column justify-content-between rounded-xl border border-3 border-primary-custom">
-		<!-- Header -->
+		<!-- Question Number -->
 		<div class="text-muted mb-2 d-flex justify-content-between gap-3">
 			<span class="px-3 py-2 rounded-xl shadow-sm bg-secondary-custom text-light"> Quiz: Reading: {{ folder_name }} </span>
-
 			<span class="px-3 py-2 rounded-xl shadow-sm bg-primary-custom text-light"> Question {{ quiz_index }} / {{ total_questions }} </span>
-
 			<span class="px-3 py-2 rounded-xl shadow-sm bg-success text-light"> Score: {{ quiz_score }} </span>
 		</div>
 
-		<!-- Question -->
+		<!-- Question Text -->
 		<h3 class="mb-4 mt-2 px-3 py-4 rounded-xxl text-white shadow-sm bg-primary-custom">{{ current_question.question_text }}</h3>
 
-		<!-- Options -->
+		<!-- Options Row -->
+
 		<div class="row g-4">
-			{% for option in options %}
-			<div class="col-12 col-sm-6 col-lg-3 d-flex">
-				<div
-					class="choice-option flex-fill d-flex align-items-center justify-content-center option-card {% if option.is_selected and option.is_correct %} bg-success text-white {% elif option.is_selected and not option.is_correct %} bg-danger text-white {% elif option.is_correct %} bg-success text-white {% endif %}"
-				>
-					<p class="mb-0">{{ option.text }}</p>
+			{% for option in current_question.options %}
+			<div
+				class="col-12 col-sm-6 col-lg-3 d-flex"
+				hx-post="{% url 'check_answer_reading' %}"
+				hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+				hx-vals='{"selected_option": "{{ option.id }}", "question_id": "{{ current_question.id }}"}'
+				hx-target="#quizAreaReading"
+				hx-swap="outerHTML transition:true"
+			>
+				<div class="choice-option flex-fill d-flex align-items-center justify-content-center option-card is-interactive">
+					<p class="mb-0 ">{{ option.text }}</p>
 				</div>
 			</div>
 			{% endfor %}
 		</div>
 	</div>
 </div>
-
-
-<div hx-post="{% url 'load_next_question_reading' %}" 
-hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
-hx-target="#quizAreaReading" 
-hx-swap="outerHTML transition:true" 
-hx-trigger="load delay:1.5s once"></div>
-
