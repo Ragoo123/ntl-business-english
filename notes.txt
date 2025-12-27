@@ -1,3 +1,1 @@
-fixed, no need to pass reading text and the layuot shift happens no more
-need to sort out feedback page, need to highlight the correct answer if not selected
-and them move onto the next question, code is there, need to uncomment it
+all working nice, need to create result page but the fucker reading text keeps appearing

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from vocabulary.models import Folder, VocabularyWord, QuizScore, User, ListeningQuiz, ListeningQuestion, ListeningOption
 from quiz.models import ReadingText, ReadingQuestion, ReadingOption
 from django.http import HttpResponse, Http404
@@ -142,11 +142,18 @@ def nextQuestionReading(request):
     quiz_index = request.session.get('quiz_index', 0) + 1
 
     folder_name = request.session.get('folder_name')
+    folder_id = request.session.get('quiz_folder_id')
     quiz_data = request.session.get('quiz_data', [])
-    current_question = quiz_data[quiz_index]
-    options = current_question['options']
+
+
+    if quiz_index >= len(quiz_data):
+        response = HttpResponse("")
+        response["HX-Redirect"] = reverse("quiz_results", args=[folder_id])
+        return response
 
     request.session['quiz_index'] = quiz_index
+    current_question = quiz_data[quiz_index]
+    options = current_question['options']
 
     context = {
         'folder_name': folder_name,
@@ -158,6 +165,12 @@ def nextQuestionReading(request):
     }
     
     return render(request, "partials/_reading/_quiz_reading_questions.html", context)
+
+def quizResults(request, folder_id):
+    context = {
+        "quiz_review_partial": "partials/_review_answers.html",
+    }
+    return render(request, "quiz/quiz_results.html", context)
 
 def quizViewListening(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)

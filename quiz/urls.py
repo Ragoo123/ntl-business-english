@@ -1,6 +1,6 @@
 #urls.py
 from django.urls import path
-from .views import quizView, checkAnswer, nextQuestion, quizViewGapFill, quizViewListening,  checkAnswerListening, nextQuestionListening, quizReadingView, checkAnswerReading, nextQuestionReading
+from .views import quizView, checkAnswer, nextQuestion, quizViewGapFill, quizViewListening,  checkAnswerListening, nextQuestionListening, quizReadingView, checkAnswerReading, nextQuestionReading, quizResults
 
 urlpatterns = [
     path('quiz/<int:folder_id>/', quizView, name='quiz'),
@@ -13,5 +13,6 @@ urlpatterns = [
     path('quiz/<int:folder_id>/reading/', quizReadingView, name='quiz_reading'),
     path('quiz/check/reading/', checkAnswerReading, name='check_answer_reading'),
     path('quiz/next/reading/', nextQuestionReading, name='load_next_question_reading'),
+    path('quiz/results/<int:folder_id>/', quizResults, name='quiz_results'),
     
 ]

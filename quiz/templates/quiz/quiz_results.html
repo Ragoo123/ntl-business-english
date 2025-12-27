@@ -1,0 +1,106 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %} Quiz Results {% endblock title %}
+{% block content %}
+<div class="container" >
+<div class="card-body text-center">
+	<!-- Headline -->
+	<h3 class="text-primary fw-bold mt-2 mb-4">
+		<span class="px-3 py-2 rounded-xl shadow-sm bg-primary-custom text-light"> Quiz Results - {{ folder_name }} </span></h3>
+
+	<!-- Four-column Score Summary -->
+	<div class="row text-center mb-4 gx-4">
+		<!-- Your Score -->
+		<div class="col-6 col-md-3">
+			<div class="bg-success text-white rounded p-3 shadow-sm">
+				<h5 class="mb-1">✅ Score</h5>
+				<p class="display-6 fw-bold">{{ quiz_score }}</p>
+			</div>
+		</div>
+
+		<!-- Incorrect -->
+		<div class="col-6 col-md-3">
+			<div class="bg-danger text-white rounded p-3 shadow-sm">
+				<h5 class="mb-1">❌ Incorrect</h5>
+				<p class="display-6 fw-bold">{{ incorrect }}</p>
+			</div>
+		</div>
+
+		<!-- Total Questions -->
+		<div class="col-6 col-md-3 mt-3 mt-md-0">
+			<div class="bg-primary text-white rounded p-3 shadow-sm">
+				<h5 class="mb-1">📚 Total</h5>
+				<p class="display-6 fw-bold">{{ total_questions }}</p>
+			</div>
+		</div>
+
+		<!-- Percent -->
+		<div class="col-6 col-md-3 mt-3 mt-md-0">
+			<div class="bg-warning text-dark rounded p-3 shadow-sm">
+				<h5 class="mb-1">📊 Percent</h5>
+				<p class="display-6 fw-bold">{{ percent }}%</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Progress Bar -->
+	{% comment %} <div class="progress my-4" style="height: 30px">
+		<div class="progress-bar bg-success fw-bold" role="progressbar" style="width: {{ percent }}%;" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">{{ percent }}%</div>
+	</div> {% endcomment %}
+
+	<div class="row text-center mb-4 gx-4">
+		<!-- Restart -->
+		<a href="#" class="col-6 col-md-3 text-decoration-none">
+			<div class="bg-light bg-gradient text-dark p-3 rounded shadow-sm border border-primary cursor-pointer quiz-card">
+				<h5 class="mb-1">Restart</h5>
+				<p class="display-6 fw-bold">🔄</p>
+			</div>
+		</a>
+
+		<!-- Quit -->
+		<a href="#" class="col-6 col-md-3 text-decoration-none">
+			<div class="bg-light bg-gradient text-dark p-3 rounded-xl shadow-sm border border-primary cursor-pointer quiz-card">
+				<h5 class="mb-1">Quit</h5>
+				<p class="display-6 fw-bold">🛑</p>
+			</div>
+		</a>
+
+		<!-- Summary (collapse + scroll to review) -->
+		<!-- Summary (button to collapse + scroll) -->
+		<div class="col-6 col-md-3">
+			<button type="button" class="btn p-0 border-0 w-100 bg-transparent" data-bs-toggle="collapse" data-bs-target="#reviewBox">
+				<div class="bg-light bg-gradient text-dark p-3 rounded shadow-sm border border-primary cursor-pointer quiz-card text-center">
+					<h5 class="mb-1">Review Answers</h5>
+					<p class="display-6 fw-bold">🔍</p>
+				</div>
+			</button>
+		</div>
+
+		<!-- Good Work -->
+		<div class="col-6 col-md-3">
+			<div class="bg-secondary text-white rounded p-3 shadow-sm">
+				<h5 class="mb-1"> 🌟 Excellent Work</h5>
+				<p class="display-6 fw-bold"> 🏆</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Collapse Review Section -->
+	<div class="collapse bg-primary-custom text-dark p-3 rounded shadow-sm" id="reviewBox"> {% include quiz_review_partial %}
+		
+	</div>
+
+</div>
+</div>
+{% endblock content %}
+
+{% comment %} <script>
+	document.addEventListener('htmx:afterSwap', (event) => {
+	    if(event.target.id === 'quiz-container') {
+	        const percent = {{ percent }};
+	        if (percent >= 80) {
+	            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+	        }
+	    }
+	});
+</script> {% endcomment %}
